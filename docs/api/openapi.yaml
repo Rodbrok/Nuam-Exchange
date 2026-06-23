@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: NUAM Exchange API
+  version: 0.1.0
+  description: Contrato provisional para integración futura con ASP.NET Core Web API .NET 8.
+servers:
+  - url: /api/v1
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+  - name: Classifications
+  - name: Uploads
+  - name: Dashboard
+  - name: Reports
+  - name: Users
+  - name: Roles
+  - name: Audit
+  - name: Backups
+paths:
+  /auth/login:
+    post: { tags: [Auth], operationId: login, security: [], requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } } }, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/LoginResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '500': { $ref: '#/components/responses/ServerError' } } }
+  /auth/logout:
+    post: { tags: [Auth], operationId: logout, responses: { '204': { description: No Content }, '401': { $ref: '#/components/responses/Unauthorized' } } }
+  /auth/me:
+    get: { tags: [Auth], operationId: getCurrentUser, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/CurrentUserResponse' } } } }, '401': { $ref: '#/components/responses/Unauthorized' } } }
+  /classifications:
+    get:
+      tags: [Classifications]
+      operationId: listClassifications
+      parameters: [ { $ref: '#/components/parameters/Page' }, { $ref: '#/components/parameters/PageSize' }, { name: search, in: query, schema: { type: string } }, { name: market, in: query, schema: { type: string } }, { name: source, in: query, schema: { type: string } }, { name: fiscalYear, in: query, schema: { type: integer } }, { name: status, in: query, schema: { type: string } }, { name: sortBy, in: query, schema: { type: string } }, { name: sortDirection, in: query, schema: { $ref: '#/components/schemas/SortDirection' } } ]
+      responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/PaginatedClassifications' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '401': { $ref: '#/components/responses/Unauthorized' }, '403': { $ref: '#/components/responses/Forbidden' }, '500': { $ref: '#/components/responses/ServerError' } }
+    post: { tags: [Classifications], operationId: createClassification, requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateClassificationRequest' } } } }, responses: { '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/ClassificationWriteResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '401': { $ref: '#/components/responses/Unauthorized' }, '403': { $ref: '#/components/responses/Forbidden' }, '409': { $ref: '#/components/responses/Conflict' }, '500': { $ref: '#/components/responses/ServerError' } } }
+  /classifications/catalogs:
+    get: { tags: [Classifications], operationId: getClassificationCatalogs, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/ClassificationCatalogs' } } } }, '401': { $ref: '#/components/responses/Unauthorized' }, '500': { $ref: '#/components/responses/ServerError' } } }
+  /classifications/{id}:
+    parameters: [ { $ref: '#/components/parameters/Id' } ]
+    get: { tags: [Classifications], operationId: getClassificationById, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Classification' } } } }, '401': { $ref: '#/components/responses/Unauthorized' }, '404': { $ref: '#/components/responses/NotFound' }, '500': { $ref: '#/components/responses/ServerError' } } }
+    put: { tags: [Classifications], operationId: updateClassification, parameters: [ { $ref: '#/components/parameters/IfMatch' } ], requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/UpdateClassificationRequest' } } } }, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/ClassificationWriteResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '409': { $ref: '#/components/responses/Conflict' }, '500': { $ref: '#/components/responses/ServerError' } } }
+    delete: { tags: [Classifications], operationId: deleteClassification, parameters: [ { $ref: '#/components/parameters/IfMatch' } ], responses: { '204': { description: No Content }, '401': { $ref: '#/components/responses/Unauthorized' }, '403': { $ref: '#/components/responses/Forbidden' }, '404': { $ref: '#/components/responses/NotFound' }, '409': { $ref: '#/components/responses/Conflict' }, '500': { $ref: '#/components/responses/ServerError' } } }
+  /classifications/{id}/copy:
+    post: { tags: [Classifications], operationId: copyClassification, parameters: [ { $ref: '#/components/parameters/Id' } ], requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/CopyClassificationRequest' } } } }, responses: { '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/ClassificationWriteResponse' } } } }, '404': { $ref: '#/components/responses/NotFound' }, '500': { $ref: '#/components/responses/ServerError' } } }
+  /uploads/x-factor/validate: &uploadValidate
+    post: { tags: [Uploads], operationId: validateXFactorUpload, requestBody: { required: true, content: { multipart/form-data: { schema: { type: object, properties: { file: { type: string, format: binary } }, required: [file] } } } }, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/UploadValidationResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '500': { $ref: '#/components/responses/ServerError' } } }
+  /uploads/x-factor/process: { post: { tags: [Uploads], operationId: processXFactorUpload, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/UploadProcessResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /uploads/x-amount/validate: { post: { tags: [Uploads], operationId: validateXAmountUpload, requestBody: { required: true, content: { multipart/form-data: { schema: { type: object, properties: { file: { type: string, format: binary } }, required: [file] } } } }, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/UploadValidationResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /uploads/x-amount/process: { post: { tags: [Uploads], operationId: processXAmountUpload, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/UploadProcessResponse' } } } }, '400': { $ref: '#/components/responses/BadRequest' }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /uploads: { get: { tags: [Uploads], operationId: listUploads, responses: { '200': { description: OK, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/UploadHistoryItem' } } } } }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /dashboard/summary: { get: { tags: [Dashboard], operationId: getDashboardSummary, responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/DashboardSummaryResponse' } } } }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /reports/classifications: { get: { tags: [Reports], operationId: getClassificationReport, responses: { '200': { description: OK }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /reports/uploads: { get: { tags: [Reports], operationId: getUploadReport, responses: { '200': { description: OK }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /users: { get: { tags: [Users], operationId: listUsers, responses: { '200': { description: OK }, '401': { $ref: '#/components/responses/Unauthorized' }, '403': { $ref: '#/components/responses/Forbidden' }, '500': { $ref: '#/components/responses/ServerError' } } }, post: { tags: [Users], operationId: createUser, responses: { '201': { description: Created }, '400': { $ref: '#/components/responses/BadRequest' }, '409': { $ref: '#/components/responses/Conflict' } } } }
+  /users/{id}: { put: { tags: [Users], operationId: updateUser, parameters: [ { $ref: '#/components/parameters/Id' } ], responses: { '200': { description: OK }, '404': { $ref: '#/components/responses/NotFound' }, '500': { $ref: '#/components/responses/ServerError' } } } }
+  /users/{id}/status: { patch: { tags: [Users], operationId: changeUserStatus, parameters: [ { $ref: '#/components/parameters/Id' } ], responses: { '200': { description: OK }, '403': { $ref: '#/components/responses/Forbidden' } } } }
+  /users/{id}/reset-access: { post: { tags: [Users], operationId: resetUserAccess, parameters: [ { $ref: '#/components/parameters/Id' } ], responses: { '202': { description: Accepted }, '403': { $ref: '#/components/responses/Forbidden' } } } }
+  /roles: { get: { tags: [Roles], operationId: listRoles, responses: { '200': { description: OK } } } }
+  /roles/{role}/permissions: { get: { tags: [Roles], operationId: getRolePermissions, parameters: [ { name: role, in: path, required: true, schema: { type: string } } ], responses: { '200': { description: OK }, '404': { $ref: '#/components/responses/NotFound' } } }, put: { tags: [Roles], operationId: updateRolePermissions, parameters: [ { name: role, in: path, required: true, schema: { type: string } } ], responses: { '200': { description: OK }, '403': { $ref: '#/components/responses/Forbidden' } } } }
+  /audit-events: { get: { tags: [Audit], operationId: listAuditEvents, responses: { '200': { description: OK }, '403': { $ref: '#/components/responses/Forbidden' } } } }
+  /backups: { get: { tags: [Backups], operationId: listBackups, responses: { '200': { description: OK } } }, post: { tags: [Backups], operationId: createBackup, responses: { '202': { description: Accepted }, '403': { $ref: '#/components/responses/Forbidden' } } } }
+  /backups/{id}/restore: { post: { tags: [Backups], operationId: restoreBackup, parameters: [ { $ref: '#/components/parameters/Id' } ], responses: { '202': { description: Accepted }, '409': { $ref: '#/components/responses/Conflict' } } } }
+  /backups/{id}/cancel: { post: { tags: [Backups], operationId: cancelBackup, parameters: [ { $ref: '#/components/parameters/Id' } ], responses: { '202': { description: Accepted }, '404': { $ref: '#/components/responses/NotFound' } } } }
+  /backups/{id}/manifest: { get: { tags: [Backups], operationId: getBackupManifest, parameters: [ { $ref: '#/components/parameters/Id' } ], responses: { '200': { description: OK }, '404': { $ref: '#/components/responses/NotFound' } } } }
+  /backup-policy: { get: { tags: [Backups], operationId: getBackupPolicy, responses: { '200': { description: OK } } }, put: { tags: [Backups], operationId: updateBackupPolicy, responses: { '200': { description: OK }, '400': { $ref: '#/components/responses/BadRequest' } } } }
+components:
+  securitySchemes: { bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT } }
+  parameters:
+    Id: { name: id, in: path, required: true, schema: { type: string } }
+    IfMatch: { name: If-Match, in: header, required: false, schema: { type: string } }
+    Page: { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+    PageSize: { name: pageSize, in: query, schema: { type: integer, enum: [5, 10, 20], default: 10 } }
+  responses:
+    BadRequest: { description: Bad Request, content: { application/problem+json: { schema: { $ref: '#/components/schemas/ProblemDetails' } } } }
+    Unauthorized: { description: Unauthorized, content: { application/problem+json: { schema: { $ref: '#/components/schemas/ProblemDetails' } } } }
+    Forbidden: { description: Forbidden, content: { application/problem+json: { schema: { $ref: '#/components/schemas/ProblemDetails' } } } }
+    NotFound: { description: Not Found, content: { application/problem+json: { schema: { $ref: '#/components/schemas/ProblemDetails' } } } }
+    Conflict: { description: Conflict, content: { application/problem+json: { schema: { $ref: '#/components/schemas/ProblemDetails' } } } }
+    ServerError: { description: Server Error, content: { application/problem+json: { schema: { $ref: '#/components/schemas/ProblemDetails' } } } }
+  schemas:
+    SortDirection: { type: string, enum: [asc, desc] }
+    ProblemDetails: { type: object, required: [title, status], properties: { type: { type: string }, title: { type: string }, status: { type: integer }, detail: { type: string }, instance: { type: string }, traceId: { type: string }, errors: { type: object, additionalProperties: { type: array, items: { type: string } } } } }
+    LoginRequest: { type: object, required: [email, password], properties: { email: { type: string, format: email }, password: { type: string, format: password } } }
+    AuthenticatedUser: { type: object, properties: { id: { type: string }, name: { type: string }, email: { type: string }, role: { type: string } } }
+    LoginResponse: { type: object, properties: { accessToken: { type: string }, expiresAt: { type: string, format: date-time }, user: { $ref: '#/components/schemas/AuthenticatedUser' } } }
+    CurrentUserResponse: { type: object, properties: { user: { $ref: '#/components/schemas/AuthenticatedUser' } } }
+    Classification: { type: object, required: [id, market, source, fiscalYear, instrument, paymentDate, description, eventSequence, updateFactor, amount, status], properties: { id: { type: string }, market: { type: string }, source: { type: string }, fiscalYear: { type: integer }, instrument: { type: string }, paymentDate: { type: string, format: date }, description: { type: string }, eventSequence: { type: string }, updateFactor: { type: number, format: double }, amount: { type: number, format: double }, status: { type: string }, rowVersion: { type: string, format: byte } } }
+    CreateClassificationRequest: { allOf: [ { $ref: '#/components/schemas/Classification' } ] }
+    UpdateClassificationRequest: { allOf: [ { $ref: '#/components/schemas/Classification' } ] }
+    CopyClassificationRequest: { type: object, properties: { paymentDate: { type: string, format: date }, description: { type: string }, eventSequence: { type: string } } }
+    ClassificationCatalogs: { type: object, properties: { markets: { type: array, items: { type: string } }, sources: { type: array, items: { type: string } }, fiscalYears: { type: array, items: { type: integer } }, statuses: { type: array, items: { type: string } } } }
+    PaginatedClassifications: { type: object, properties: { items: { type: array, items: { $ref: '#/components/schemas/Classification' } }, page: { type: integer }, pageSize: { type: integer }, totalItems: { type: integer }, totalPages: { type: integer } } }
+    ClassificationWriteResponse: { type: object, properties: { classification: { $ref: '#/components/schemas/Classification' }, message: { type: string } } }
+    UploadValidationResponse: { type: object, properties: { uploadId: { type: string }, isValid: { type: boolean }, totalRows: { type: integer }, validRows: { type: integer }, errors: { type: array, items: { type: object } } } }
+    UploadProcessResponse: { type: object, properties: { processId: { type: string }, processedRows: { type: integer }, createdRows: { type: integer }, updatedRows: { type: integer }, message: { type: string } } }
+    UploadHistoryItem: { type: object, properties: { id: { type: string }, type: { type: string }, fileName: { type: string }, uploadedAt: { type: string, format: date-time }, status: { type: string } } }
+    DashboardSummaryResponse: { type: object, properties: { generatedAt: { type: string, format: date-time }, metrics: { type: array, items: { type: object } }, series: { type: array, items: { type: object } } } }

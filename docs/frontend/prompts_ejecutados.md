@@ -204,3 +204,23 @@ Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo
 **Limitaciones:** los datos, progreso, política y acciones son únicamente simulados en memoria.
 
 **Próximo paso:** Prompt 009 — Preparación de contratos API e integración con backend ASP.NET Core .NET 8.
+
+## Prompt 009 — Contratos API e integración preparada para ASP.NET Core .NET 8
+
+**Objetivo:** preparar el frontend para una futura Web API ASP.NET Core .NET 8 con SQL Server, ProblemDetails, roles, paginación, validación y cargas multipart, manteniendo `mock` como fuente predeterminada.
+
+**Archivos creados:** `.env.example`, capa `src/api` con configuración, contratos, `ApiError`, `HttpClient`, servicios de Calificaciones, mappers, provider y hook; `DataSourceIndicator`; documentos `docs/api/openapi.yaml`, `docs/api/contratos_api.md` e `docs/api/integracion_aspnet_core.md`.
+
+**Archivos modificados:** `src/app/App.tsx`, `src/pages/ClassificationsPage.tsx`, `src/layouts/AppLayout.tsx`, `src/styles/global.css`, `src/vite-env.d.ts`, `README.md`, `docs/frontend/arquitectura_frontend.md` y este registro.
+
+**Contratos:** comunes, autenticación provisional, Calificaciones, Cargas, Dashboard, Reportes, Administración, Auditoría y Respaldos.
+
+**HttpClient y servicios:** transporte centralizado con timeout/cancelación, ProblemDetails y adaptadores mock/HTTP. Calificaciones queda como piloto con listados y catálogos por servicio.
+
+**Seguridad:** sin almacenamiento de tokens, sin secretos, sin logs de credenciales, sin backend real ni persistencia. Autorización efectiva queda para backend futuro.
+
+**Pruebas:** `git diff --check`, `npm ci`, `npm run lint`, `npm run build`; validación manual de modo mock y modo API sin backend cuando el entorno lo permita.
+
+**Limitaciones:** endpoints y DTOs son provisionales; formularios de escritura y demás módulos no migran aún a HTTP.
+
+**Próximo paso:** Prompt 010 — Creación inicial del backend ASP.NET Core .NET 8 y SQL Server.
