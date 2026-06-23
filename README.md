@@ -58,3 +58,15 @@ Esta base incluye rutas navegables, layout administrativo, sidebar responsive, h
 ## Integración con API
 
 Actualmente no existe integración con API, backend, JWT ni base de datos. La variable `VITE_API_BASE_URL` queda documentada en `.env.example` para una integración futura.
+
+## Sesión simulada por roles
+
+La aplicación cuenta con un login de demostración para validar navegación y permisos sin backend real. La sesión se mantiene únicamente en memoria mediante React Context, por lo que se pierde al recargar la página o cerrar la pestaña.
+
+Perfiles disponibles:
+
+- Administrador: acceso a todos los módulos administrativos preparados.
+- Analista Tributario: acceso a inicio, calificaciones, cargas, plantillas y reportes.
+- Supervisor: acceso a inicio, calificaciones, cargas, plantillas y reportes, sin alta ni edición de calificaciones.
+
+Esta implementación no crea credenciales reales, no guarda contraseñas, no utiliza `localStorage`, `sessionStorage`, cookies, API, JWT ni llamadas HTTP. El campo de contraseña es solamente visual y exige contenido no vacío para simular el flujo.
