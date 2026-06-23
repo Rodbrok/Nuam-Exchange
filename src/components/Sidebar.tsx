@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useSession } from '../app/session/useSession';
 import { getNavigationForRole } from '../routes/navigation';
+const groupLabels: Record<string, string> = { '/inicio': 'Operación', '/administracion/usuarios': 'Administración' };
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -20,8 +21,9 @@ export function Sidebar({ isCollapsed, isMobileOpen, onCloseMobile }: SidebarPro
       </div>
       <nav aria-label="Menú principal">
         {authorizedItems.map((item) => (
+          <div key={item.path}>
+            {groupLabels[item.path] ? <p className="sidebar-group">{groupLabels[item.path]}</p> : null}
           <NavLink
-            key={item.path}
             to={item.path}
             className={({ isActive }) => `sidebar-link ${isActive ? 'is-active' : ''}`}
             onClick={onCloseMobile}
@@ -29,6 +31,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, onCloseMobile }: SidebarPro
             <span className="sidebar-marker" aria-hidden="true" />
             <span>{item.label}</span>
           </NavLink>
+          </div>
         ))}
       </nav>
     </aside>

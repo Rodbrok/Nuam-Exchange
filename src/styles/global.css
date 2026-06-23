@@ -180,3 +180,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .status-bloqueado::before { background: var(--color-danger); }
 @media (max-width: 900px) { .admin-summary, .role-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-filters { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .admin-summary, .role-summary, .dialog-form { grid-template-columns: 1fr; } }
+.demo-chip, .demo-notice { display: inline-flex; align-items: center; gap: var(--space-2); border: 1px solid #b8d7f0; background: #eef7ff; color: var(--color-primary-dark); border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+.demo-notice { justify-content: space-between; border-radius: var(--radius-md); padding: var(--space-3); }
+.demo-notice span { color: var(--color-text-muted); font-weight: 600; }
+.sidebar-group { margin: var(--space-4) 0 var(--space-2); color: #b8c4d2; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.detail-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+.detail-list div { border: 1px solid var(--color-border); background: var(--color-surface-muted); border-radius: var(--radius-sm); padding: var(--space-2); }
+.detail-list dt { color: var(--color-text-muted); font-size: 12px; font-weight: 700; }
+.detail-list dd { margin: 4px 0 0; overflow-wrap: anywhere; }
+.status-exitoso::before, .status-informativa::before, .status-completado::before { background: var(--color-success); }
+.status-advertencia::before, .status-media::before, .status-programado::before, .status-en-proceso::before { background: var(--color-warning); }
+.status-fallido::before, .status-alta::before, .status-cancelado::before { background: var(--color-danger); }
+.audit-filters { grid-template-columns: repeat(5, minmax(130px, 1fr)); }
+@media (max-width: 760px) { .detail-list, .audit-filters { grid-template-columns: 1fr; } .demo-notice { align-items: flex-start; border-radius: var(--radius-md); flex-direction: column; } }
