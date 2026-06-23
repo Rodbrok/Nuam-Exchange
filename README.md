@@ -80,3 +80,11 @@ La tabla permite selección única de registros, ordenamiento por ejercicio, ins
 Las acciones visuales se muestran según el rol activo: Administrador y Analista Tributario ven ingreso, modificación, eliminación, copia, cargas y opciones; Supervisor conserva consulta, selección, cargas y opciones. Las acciones de eliminación, copia y opciones solo muestran mensajes informativos; las rutas de ingreso, edición y cargas navegan a pantallas preparadas sin guardar información.
 
 No existe backend, API, persistencia, `fetch`, Axios, CRUD real ni almacenamiento local para este listado. Los estados loading, empty y error son visuales; el error se activa desde un control temporal de demostración que será retirado al integrar la API.
+
+## Formularios de ingreso, edición y copia de Calificaciones
+
+Las rutas `/calificaciones/nueva`, `/calificaciones/:id/editar` y `/calificaciones/:id/copiar` usan un formulario compartido para simular ingreso, modificación y copia de calificaciones tributarias. El formulario valida campos en frontend, muestra errores accesibles junto a cada control, resume los errores al enviar y enfoca el primer campo inválido.
+
+El factor de actualización se calcula automáticamente en memoria con un catálogo mock por ejercicio y mes. Es un cálculo referencial de demostración: no es una fórmula tributaria real, no debe usarse en producción y no proviene de una API oficial. La conversión de fechas entre `dd-MM-yyyy` y `yyyy-MM-dd` se realiza sin librerías externas.
+
+Los envíos exitosos solo muestran un resumen visual de valores procesados. No se modifica el mock, no se persiste información, no se utiliza backend, no hay llamadas HTTP y no se usa `localStorage` ni `sessionStorage`.

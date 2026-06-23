@@ -82,7 +82,7 @@ export function ClassificationsPage() {
       {canEnter ? <Button variant="primary" onClick={() => navigate('/calificaciones/nueva')}>Ingresar</Button> : null}
       {canEdit ? <Button disabled={!selected} onClick={() => requireSelection('Modificar', (record) => navigate(`/calificaciones/${record.id}/editar`))}>Modificar</Button> : null}
       {canEdit ? <Button disabled={!selected} onClick={() => requireSelection('Eliminar', () => setMessage('La eliminación real se implementará posteriormente.'))}>Eliminar</Button> : null}
-      {canEdit ? <Button disabled={!selected} onClick={() => requireSelection('Copiar', () => setMessage('La copia se implementará en el siguiente prompt.'))}>Copiar</Button> : null}
+      {canEdit ? <Button disabled={!selected} onClick={() => requireSelection('Copiar', (record) => navigate(`/calificaciones/${record.id}/copiar`))}>Copiar</Button> : null}
       {canMassLoad ? <Button onClick={() => navigate('/cargas/x-factor')}>Carga X Factor</Button> : null}
       {canMassLoad ? <Button onClick={() => navigate('/cargas/x-monto')}>Carga X Monto</Button> : null}
       <Button disabled={!selected} onClick={() => requireSelection('Opciones', (record) => setMessage(`Registro ${record.id}: ${record.instrumento}, ${record.estado}, monto ${record.monto.toLocaleString('es-CL')}.`))}>Opciones</Button>

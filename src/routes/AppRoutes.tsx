@@ -5,6 +5,9 @@ import { InicioPage } from '../pages/InicioPage';
 import { LoginPage } from '../pages/LoginPage';
 import { PlaceholderPage } from '../components/PlaceholderPage';
 import { ClassificationsPage } from '../pages/ClassificationsPage';
+import { ClassificationCreatePage } from '../pages/ClassificationCreatePage';
+import { ClassificationEditPage } from '../pages/ClassificationEditPage';
+import { ClassificationCopyPage } from '../pages/ClassificationCopyPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useSession } from '../app/session/useSession';
 
@@ -25,10 +28,13 @@ export function AppRoutes() {
             <Route path="/calificaciones" element={<ClassificationsPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/calificaciones/nueva" />}>
-            <Route path="/calificaciones/nueva" element={<PlaceholderPage title="Nueva Calificación" description="Formulario futuro para registrar calificaciones tributarias." />} />
+            <Route path="/calificaciones/nueva" element={<ClassificationCreatePage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/calificaciones/:id/editar" />}>
-            <Route path="/calificaciones/:id/editar" element={<PlaceholderPage title="Editar Calificación" description="Ruta preparada para editar una calificación mediante parámetro." />} />
+            <Route path="/calificaciones/:id/editar" element={<ClassificationEditPage />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/calificaciones/:id/copiar" />}>
+            <Route path="/calificaciones/:id/copiar" element={<ClassificationCopyPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/cargas/x-factor" />}>
             <Route path="/cargas/x-factor" element={<PlaceholderPage title="Carga X Factor" description="Módulo futuro para carga de archivo X Factor." />} />

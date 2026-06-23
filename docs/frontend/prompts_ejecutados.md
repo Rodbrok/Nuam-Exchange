@@ -96,3 +96,36 @@ Validaciones: se deben ejecutar `git diff --check`, `git status --short`, `npm i
 Limitaciones: no existe backend, API, persistencia, CRUD real, carga real de archivos ni almacenamiento en navegador. El estado error es una demostración temporal para validar la interfaz.
 
 Próximo paso: Prompt 004 — Formularios de ingreso, edición y copia de Calificaciones.
+
+## Prompt 004 — Formularios de ingreso, edición y copia de Calificaciones
+
+Objetivo: implementar formularios compartidos para ingresar, modificar y copiar calificaciones tributarias de forma simulada, sin backend ni persistencia.
+
+Archivos creados:
+
+- `src/features/classifications/ClassificationForm.tsx`.
+- `src/features/classifications/classificationFormConfig.ts`.
+- `src/features/classifications/classificationFormUtils.ts`.
+- `src/features/classifications/classificationValidation.ts`.
+- `src/features/classifications/mockFactorCalculator.ts`.
+- `src/pages/ClassificationCreatePage.tsx`.
+- `src/pages/ClassificationEditPage.tsx`.
+- `src/pages/ClassificationCopyPage.tsx`.
+
+Archivos modificados:
+
+- `src/pages/ClassificationsPage.tsx`.
+- `src/routes/AppRoutes.tsx`.
+- `src/routes/navigation.ts`.
+- `src/styles/global.css`.
+- `README.md`.
+- `docs/frontend/arquitectura_frontend.md`.
+- `docs/frontend/prompts_ejecutados.md`.
+
+Funcionalidades: formulario reutilizable en modos create, edit y copy; carga breve para editar/copiar; registro no encontrado; navegación de copia desde el listado; confirmación accesible para descartar cambios; procesamiento y éxito simulados con resumen de valores.
+
+Validaciones: opciones autorizadas, campos obligatorios, longitudes de instrumento, descripción y secuencia, secuencia alfanumérica con guion, fecha válida, monto positivo con dos decimales como máximo y factor calculado mayor que cero.
+
+Limitaciones: no hay backend, API, persistencia, modificación de mocks, `fetch`, Axios, `localStorage` ni `sessionStorage`. El factor es referencial, ficticio y no tributario.
+
+Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo.

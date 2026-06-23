@@ -71,3 +71,13 @@ La paginación reutilizable recibe estado tipado, total de registros, cambio de 
 Las acciones principales respetan los roles ya existentes sin modificar la matriz de permisos. Administrador y Analista Tributario pueden ver acciones visuales de ingresar, modificar, eliminar, copiar, cargas y opciones. Supervisor no ve ingresar, modificar, eliminar ni copiar, pero sí puede consultar, seleccionar registros, acceder a cargas y usar opciones. Eliminar y copiar no ejecutan persistencia; solo muestran mensajes accesibles.
 
 Los estados de vista son componentes reutilizables: `LoadingState` simula una carga breve al entrar y cancela su temporizador al desmontar, `EmptyState` aparece cuando no hay resultados filtrados y `ErrorState` se activa por un selector temporal llamado Estado de demostración. Estos estados no hacen llamadas HTTP y serán reemplazados o conectados a la API en prompts posteriores.
+
+## Formularios compartidos de Calificaciones
+
+El módulo de calificaciones incorpora `ClassificationForm` como formulario compartido para los modos `create`, `edit` y `copy`. Las páginas concretas se limitan a resolver valores iniciales, estado de carga breve y registros inexistentes; la lógica de edición de campos, envío simulado, validación, resumen de errores, confirmación de descarte y resultado de éxito vive en la carpeta funcional `src/features/classifications`.
+
+La validación está separada en `classificationValidation.ts` y cubre obligatoriedad, opciones autorizadas, longitudes, formato de secuencia, fecha válida, monto positivo con máximo dos decimales y factor mayor que cero. Las funciones de fechas en `classificationFormUtils.ts` convierten entre el formato de los mocks `dd-MM-yyyy` y el formato de `input date` `yyyy-MM-dd`, rechazando fechas inválidas sin generar `Invalid Date` visible.
+
+El factor se calcula en `mockFactorCalculator.ts` usando un catálogo ficticio por ejercicio y mes. Es una simulación frontend referencial, no una regla tributaria real, no proviene de API oficial y deberá reemplazarse por reglas del backend cuando exista integración.
+
+Las rutas `/calificaciones/nueva`, `/calificaciones/:id/editar` y `/calificaciones/:id/copiar` se protegen con la matriz centralizada de `rolePermissions`. Administrador y Analista Tributario pueden acceder a las tres rutas; Supervisor queda redirigido a `/sin-acceso`. Los estados contemplados son carga inicial en editar/copiar, formulario listo, procesamiento, éxito simulado, errores de validación y registro no encontrado. No existe persistencia ni modificación permanente de mocks.
