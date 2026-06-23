@@ -1,0 +1,4 @@
+import { Panel } from '../components/Panel';
+import { PageHeader } from '../components/PageHeader';
+import { mockClassifications } from '../mocks/classifications';
+export function DashboardPage() { const valid = mockClassifications.filter((item) => item.estado === 'Validado').length; return <><PageHeader title="Inicio" description="Resumen operativo con datos mockeados para revisión visual." /><div className="metric-grid"><Panel><strong>{mockClassifications.length}</strong><span>Total de calificaciones</span></Panel><Panel><strong>2</strong><span>Cargas pendientes</span></Panel><Panel><strong>{valid}</strong><span>Registros validados</span></Panel><Panel><strong>1</strong><span>Observaciones pendientes</span></Panel></div><Panel title="Estado de integración"><p>La interfaz utiliza actualmente datos mockeados. La integración con ASP.NET Core Web API se realizará posteriormente desde la carpeta src/api.</p></Panel></>; }

@@ -1,0 +1,2 @@
+import { Button } from '../components/Button';
+export function LoginPage() { return <main className="login-page"><section className="login-card"><h1>Nuam Exchange</h1><p>Sistema de Gestión Tributaria</p><p>Pantalla base preparada para implementar login y simulación de sesión por roles en el próximo avance.</p><Button onClick={() => { window.location.href = '/inicio'; }} variant="primary">Ingresar visualmente</Button></section></main>; }
