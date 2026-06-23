@@ -224,3 +224,7 @@ Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo
 **Limitaciones:** endpoints y DTOs son provisionales; formularios de escritura y demás módulos no migran aún a HTTP.
 
 **Próximo paso:** Prompt 010 — Creación inicial del backend ASP.NET Core .NET 8 y SQL Server.
+
+## Prompt 010 — Backend inicial ASP.NET Core .NET 8 y SQL Server
+
+Se agregó la base del backend en ASP.NET Core .NET 8 con SQL Server y la API real de Calificaciones compatible con los contratos existentes. Próximo paso: Prompt 011 — Autenticación JWT, usuarios, roles y autorización en backend.

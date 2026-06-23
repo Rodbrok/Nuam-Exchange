@@ -19,3 +19,9 @@ Las cargas usan `multipart/form-data` con `IFormFile` futuro. Seguridad: JWT Bea
 | Respaldos | `GET/POST /backups`, `POST /backups/{id}/restore`, `POST /backups/{id}/cancel`, `GET /backups/{id}/manifest`, `GET/PUT /backup-policy` |
 
 Estados HTTP esperados: 200/201/202/204 para éxito; 400/422 validación; 401 sesión inválida; 403 permisos; 404 no encontrado; 409 concurrencia/conflicto; 500 error del servidor. El modo API puede fallar controladamente hasta que exista backend.
+
+## Prompt 010 — Estado implementado
+
+La API real de Calificaciones está implementada en ASP.NET Core .NET 8 bajo `backend/`. Están disponibles listado, catálogos, obtención por id, creación, actualización, copia y eliminación. Las respuestas se devuelven directamente, sin wrapper `data`, y los errores usan `application/problem+json` con `traceId` y `errors` cuando aplica.
+
+`If-Match` es opcional en esta fase para `PUT` y `DELETE`; acepta RowVersion Base64 con o sin comillas y será obligatorio en una etapa posterior. La autenticación real, JWT, usuarios y roles quedan pendientes para Prompt 011. Por seguridad temporal, la API solo inicia en `Development` o `Testing`.

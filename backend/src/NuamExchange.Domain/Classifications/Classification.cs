@@ -1,0 +1,8 @@
+namespace NuamExchange.Domain.Classifications;
+public sealed class Classification
+{
+    public string Id { get; private set; } = string.Empty; public string Market { get; private set; } = string.Empty; public string Source { get; private set; } = string.Empty; public int FiscalYear { get; private set; } public string Instrument { get; private set; } = string.Empty; public DateOnly PaymentDate { get; private set; } public string Description { get; private set; } = string.Empty; public string EventSequence { get; private set; } = string.Empty; public decimal UpdateFactor { get; private set; } public decimal Amount { get; private set; } public ClassificationStatus Status { get; private set; } public DateTimeOffset CreatedAt { get; private set; } public DateTimeOffset UpdatedAt { get; private set; } public byte[] RowVersion { get; private set; } = [];
+    private Classification() { }
+    public Classification(string id,string market,string source,int fiscalYear,string instrument,DateOnly paymentDate,string description,string eventSequence,decimal updateFactor,decimal amount,ClassificationStatus status,DateTimeOffset createdAt,DateTimeOffset updatedAt){Id=id;Update(market,source,fiscalYear,instrument,paymentDate,description,eventSequence,updateFactor,amount,status,updatedAt);CreatedAt=createdAt;}
+    public void Update(string market,string source,int fiscalYear,string instrument,DateOnly paymentDate,string description,string eventSequence,decimal updateFactor,decimal amount,ClassificationStatus status,DateTimeOffset updatedAt){Market=market;Source=source;FiscalYear=fiscalYear;Instrument=instrument;PaymentDate=paymentDate;Description=description;EventSequence=eventSequence;UpdateFactor=updateFactor;Amount=amount;Status=status;UpdatedAt=updatedAt;}
+}

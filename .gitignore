@@ -5,3 +5,15 @@ dist
 .DS_Store
 
 .env.*.local
+
+# .NET backend
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+backend/**/appsettings.Local.json
+backend/**/appsettings.*.Local.json
+backend/**/*.db
+backend/TestResults/
+backend/**/TestResults/

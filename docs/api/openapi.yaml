@@ -93,3 +93,6 @@ components:
     UploadProcessResponse: { type: object, properties: { processId: { type: string }, processedRows: { type: integer }, createdRows: { type: integer }, updatedRows: { type: integer }, message: { type: string } } }
     UploadHistoryItem: { type: object, properties: { id: { type: string }, type: { type: string }, fileName: { type: string }, uploadedAt: { type: string, format: date-time }, status: { type: string } } }
     DashboardSummaryResponse: { type: object, properties: { generatedAt: { type: string, format: date-time }, metrics: { type: array, items: { type: object } }, series: { type: array, items: { type: object } } } }
+
+# Prompt 010 note: Calificaciones y health checks están implementados en backend ASP.NET Core .NET 8.
+# Los endpoints restantes permanecen documentados como alcance futuro.

@@ -153,3 +153,25 @@ npm run dev
 La capa `src/api` separa configuración, contratos DTO, `HttpClient` con `fetch`, mapeadores, servicios mock/HTTP y `ApiServicesProvider`. La migración piloto corresponde a Calificaciones: la lista consume `ClassificationsService`, usa paginación de servidor, catálogos del servicio, cancelación, timeout y mensajes de error amigables. Los formularios de creación, edición y copia siguen en modo demostrativo.
 
 La especificación provisional está en `docs/api/openapi.yaml`; los acuerdos generales están en `docs/api/contratos_api.md` y las recomendaciones para ASP.NET Core Web API .NET 8 están en `docs/api/integracion_aspnet_core.md`. No se incluye backend, SQL Server ni autenticación real en esta etapa.
+
+## Backend ASP.NET Core .NET 8
+
+El repositorio ahora incluye `backend/` con una solución ASP.NET Core Web API .NET 8, SQL Server y EF Core 8 para la API real de Calificaciones. La autenticación real queda pendiente para el Prompt 011, por lo que el backend falla al iniciar fuera de `Development` o `Testing`.
+
+Comandos básicos:
+
+```bash
+cd backend
+dotnet tool restore
+dotnet restore NuamExchange.sln
+dotnet ef database update --project src/NuamExchange.Infrastructure --startup-project src/NuamExchange.Api
+dotnet run --project src/NuamExchange.Api
+```
+
+Para conectar el frontend contra API real:
+
+```powershell
+$env:VITE_DATA_SOURCE="api"
+$env:VITE_API_BASE_URL="https://localhost:7001/api/v1"
+npm run dev
+```

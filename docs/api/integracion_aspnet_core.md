@@ -14,3 +14,9 @@ public sealed record ApiErrorMapping(string TraceId, ProblemDetails ProblemDetai
 ```
 
 Validación puede iniciarse con DataAnnotations o validación manual; FluentValidation podría evaluarse después sin imponer dependencia ahora. No confiar en validaciones frontend.
+
+## Prompt 010 — Backend creado
+
+Se creó la solución `backend/NuamExchange.sln` con proyectos `Domain`, `Application`, `Infrastructure`, `Api` y pruebas. La API usa EF Core 8 con SQL Server, migración `InitialCreate`, datos semilla temporales de Calificaciones, ProblemDetails, manejador global de excepciones, Correlation ID, CORS restringido, rate limiting, health checks y Swagger solo en Development.
+
+Siguiente etapa: Prompt 011 implementará autenticación JWT, usuarios, roles y autorización en backend.
