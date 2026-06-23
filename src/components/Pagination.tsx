@@ -14,7 +14,7 @@ export function Pagination({ pagination, totalItems, onPageChange, onPageSizeCha
       <Button onClick={() => onPageChange(pagination.page + 1)} disabled={pagination.page >= totalPages}>Siguiente</Button>
       <label htmlFor="page-size">Registros por página</label>
       <select id="page-size" value={pagination.pageSize} onChange={(event) => onPageSizeChange(Number(event.target.value) as PaginationState['pageSize'])}>
-        <option value={5}>5</option><option value={10}>10</option><option value={20}>20</option>
+        <option value={5}>5</option><option value={10}>10</option><option value={20}>20</option><option value={50}>50</option>
       </select>
     </div>
   </div>;

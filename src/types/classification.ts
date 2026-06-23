@@ -32,5 +32,5 @@ export interface SortState {
 
 export interface PaginationState {
   page: number;
-  pageSize: 5 | 10 | 20;
+  pageSize: 5 | 10 | 20 | 50;
 }

@@ -114,3 +114,11 @@ Los datos siguen siendo simulados: no existe backend, API, persistencia, fetch n
 Se incorporan módulos visuales para `/administracion/usuarios` y `/administracion/roles-permisos`. La administración de usuarios permite consultar cuentas ficticias, filtrar por texto, rol y estado, ordenar, paginar, crear y editar usuarios en memoria, activar, desactivar, bloquear, desbloquear y simular restablecimiento de acceso sin manejar contraseñas ni credenciales. También exporta los resultados filtrados a CSV mediante la utilidad compartida, manteniendo BOM UTF-8, separador punto y coma y protección contra fórmulas.
 
 Los roles disponibles son fijos: Administrador, Analista Tributario y Supervisor. La matriz de permisos es demostrativa, editable solo para Analista y Supervisor, con permisos del Administrador bloqueados como control total. Los cambios son locales, no persisten al recargar y no modifican la sesión activa, `ProtectedRoute` ni los permisos efectivos de navegación. No existe backend, API, base de datos ni persistencia permanente en esta implementación.
+
+## Prompt 008 — Auditoría, respaldos y cierre visual del frontend
+
+El frontend incorpora `/auditoria` como módulo administrativo simulado para consultar trazabilidad ficticia con filtros por texto, fechas, usuario, rol, módulo, acción, resultado y severidad. Incluye resumen derivado, tabla ordenable y paginada, detalle accesible de evento y exportación CSV segura de los resultados filtrados.
+
+También incorpora `/respaldos` como gestión visual simulada de respaldos: filtros, resumen, tabla ordenable y paginada, creación de respaldos en memoria con progreso, restauración simulada con confirmación escrita, cancelación de ejecuciones en proceso o programadas, descarga de manifiestos CSV de metadatos y política de respaldo editable solo en memoria.
+
+Ambos módulos están restringidos al rol Administrador mediante `ProtectedRoute`; Analista Tributario y Supervisor no ven los enlaces ni pueden acceder directamente. La aplicación muestra un indicador reutilizable de Modo demostración para recordar que usa datos ficticios, no tiene persistencia ni conexión al backend. No existe backend, API, base de datos ni respaldos reales; el estado final del frontend queda preparado para contratos e integración futura con ASP.NET Core .NET 8.

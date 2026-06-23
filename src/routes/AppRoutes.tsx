@@ -3,7 +3,6 @@ import { AppLayout } from '../layouts/AppLayout';
 import { AccessDeniedPage } from '../pages/AccessDeniedPage';
 import { InicioPage } from '../pages/InicioPage';
 import { LoginPage } from '../pages/LoginPage';
-import { PlaceholderPage } from '../components/PlaceholderPage';
 import { UsersAdministrationPage } from '../pages/UsersAdministrationPage';
 import { RolesPermissionsPage } from '../pages/RolesPermissionsPage';
 import { ReportsPage } from '../pages/ReportsPage';
@@ -14,6 +13,8 @@ import { ClassificationCopyPage } from '../pages/ClassificationCopyPage';
 import { XFactorUploadPage } from '../pages/XFactorUploadPage';
 import { XAmountUploadPage } from '../pages/XAmountUploadPage';
 import { UploadTemplatesPage } from '../pages/UploadTemplatesPage';
+import { AuditPage } from '../pages/AuditPage';
+import { BackupsPage } from '../pages/BackupsPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useSession } from '../app/session/useSession';
 
@@ -61,10 +62,10 @@ export function AppRoutes() {
             <Route path="/administracion/roles-permisos" element={<RolesPermissionsPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/auditoria" />}>
-            <Route path="/auditoria" element={<PlaceholderPage title="Auditoría" description="Consulta futura de trazabilidad y auditoría." />} />
+            <Route path="/auditoria" element={<AuditPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/respaldos" />}>
-            <Route path="/respaldos" element={<PlaceholderPage title="Respaldos" description="Gestión futura de respaldos." />} />
+            <Route path="/respaldos" element={<BackupsPage />} />
           </Route>
         </Route>
       </Route>

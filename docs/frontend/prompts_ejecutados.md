@@ -180,3 +180,27 @@ Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo
 - **Pruebas:** se ejecutaron `git diff --check`, `git status --short`, `npm ci`, `npm run lint` y `npm run build`.
 - **Limitaciones:** sin backend, API, base de datos ni persistencia permanente; los cambios se pierden al recargar.
 - **Próximo paso:** Prompt 008 — Auditoría, respaldos y cierre visual del frontend.
+
+## Prompt 008 — Auditoría, respaldos y cierre visual del frontend
+
+**Objetivo:** completar `/auditoria` y `/respaldos`, reemplazar las pantallas de reserva restantes y cerrar consistencia visual, accesibilidad, seguridad y documentación del frontend.
+
+**Archivos creados:** tipos `audit` y `backup`, mocks de eventos y respaldos, módulos `features/audit`, `features/backups`, páginas `AuditPage` y `BackupsPage`, aviso `DemoNotice` y diálogo `ConfirmDialog`.
+
+**Archivos modificados:** rutas, navegación, header, estilos globales, paginación, botón reutilizable, README y documentación frontend.
+
+**Auditoría:** eventos ficticios distribuidos entre 2024, 2025 y 2026, filtros aplicados manualmente, resumen derivado, tabla con ordenamiento y paginación, detalle accesible y CSV seguro.
+
+**Respaldos:** registros ficticios, creación y restauración simuladas con progreso en memoria, cancelación visual, manifiesto CSV y política editable sin persistencia.
+
+**Seguridad:** no se implementó backend, API, persistencia, respaldos reales, restauración real, fetch, Axios, almacenamiento web ni secretos.
+
+**Accesibilidad:** labels, errores con `role="alert"`, captions, `aria-sort`, diálogos modales, Escape, foco inicial, progreso accesible y botones disabled reales.
+
+**Cierre visual:** se eliminó la pantalla de reserva para auditoría/respaldos, se agregó indicador de modo demostración y se agrupó visualmente la navegación sin cambiar permisos efectivos.
+
+**Pruebas:** `git diff --check`, `git status --short`, `npm ci`, `npm run lint` y `npm run build`.
+
+**Limitaciones:** los datos, progreso, política y acciones son únicamente simulados en memoria.
+
+**Próximo paso:** Prompt 009 — Preparación de contratos API e integración con backend ASP.NET Core .NET 8.

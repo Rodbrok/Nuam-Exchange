@@ -27,7 +27,7 @@ export function Header({ isCollapsed, onToggleSidebar, onToggleMobile }: HeaderP
         </button>
         <div>
           <strong>Nuam Exchange</strong>
-          <span>Sistema de Gestión Tributaria</span>
+          <span>Sistema de Gestión Tributaria</span><span className="demo-chip">Modo demostración</span>
         </div>
       </div>
       <div className="user-area">
