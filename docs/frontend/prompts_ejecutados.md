@@ -54,3 +54,45 @@ Validaciones ejecutadas: `git diff --check`, `git status --short`, `npm install`
 Limitaciones: la sesión es exclusivamente en memoria; al recargar se pierde. No existe autenticación real, API, JWT, cookies, `localStorage` ni `sessionStorage`.
 
 Próximo paso: Prompt 003 — Listado de Calificaciones Tributarias.
+
+## Prompt 003 — Listado de Calificaciones Tributarias
+
+Objetivo: reemplazar el placeholder de `/calificaciones` por una pantalla funcional de consulta visual con datos mockeados, filtros, tabla administrativa, selección única, ordenamiento, paginación, estados visuales y acciones diferenciadas por rol.
+
+Archivos creados:
+
+- `src/types/classification.ts`.
+- `src/mocks/classifications.ts`.
+- `src/pages/ClassificationsPage.tsx`.
+- `src/components/Button.tsx`.
+- `src/components/DataTableShell.tsx`.
+- `src/components/StatusBadge.tsx`.
+- `src/components/EmptyState`, `LoadingState` y `ErrorState` dentro de `src/components/ViewStates.tsx`.
+- `src/components/Pagination.tsx`.
+- `src/components/FormField.tsx`.
+- `src/components/InlineMessage.tsx`.
+
+Archivos modificados:
+
+- `src/routes/AppRoutes.tsx`.
+- `src/styles/global.css`.
+- `README.md`.
+- `docs/frontend/arquitectura_frontend.md`.
+- `docs/frontend/prompts_ejecutados.md`.
+
+Funciones implementadas:
+
+- Modelo `Classification` y tipos auxiliares de filtros, ordenamiento y paginación.
+- Mock de 22 registros ficticios para probar mercados, orígenes, ejercicios, estados, instrumentos, factores, montos y varias páginas.
+- Filtros en memoria aplicados por botón Buscar y restablecidos por Limpiar.
+- Tabla densa con scroll horizontal, selección única, fila seleccionada, hover, badges de estado, montos `es-CL`, factor con hasta 6 decimales y acción Ver.
+- Ordenamiento accesible por ejercicio, instrumento, fecha de pago, monto y estado.
+- Paginación con página anterior, página siguiente, página actual, total de páginas y tamaños 5, 10 y 20.
+- Barra de acciones visuales según rol activo sin modificar la sesión ni los permisos existentes.
+- Estados loading, empty y error con selector temporal de demostración.
+
+Validaciones: se deben ejecutar `git diff --check`, `git status --short`, `npm install`, `npm run lint` y `npm run build` al cerrar el prompt.
+
+Limitaciones: no existe backend, API, persistencia, CRUD real, carga real de archivos ni almacenamiento en navegador. El estado error es una demostración temporal para validar la interfaz.
+
+Próximo paso: Prompt 004 — Formularios de ingreso, edición y copia de Calificaciones.
