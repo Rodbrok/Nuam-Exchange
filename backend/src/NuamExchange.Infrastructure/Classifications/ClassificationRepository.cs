@@ -1,5 +1,129 @@
-using Microsoft.EntityFrameworkCore; using NuamExchange.Application.Classifications; using NuamExchange.Domain.Classifications; using NuamExchange.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using NuamExchange.Application.Classifications;
+using NuamExchange.Application.Exceptions;
+using NuamExchange.Domain.Classifications;
+using NuamExchange.Infrastructure.Persistence;
+
 namespace NuamExchange.Infrastructure.Classifications;
-public sealed class ClassificationRepository(NuamExchangeDbContext db):IClassificationRepository
-{ public async Task<IReadOnlyList<Classification>> ListAsync(ClassificationListRequest r,CancellationToken ct)=>await ApplySort(ApplyFilters(db.Classifications.AsNoTracking(),r),r).Skip((r.Page-1)*r.PageSize).Take(r.PageSize).ToListAsync(ct); public Task<int> CountAsync(ClassificationListRequest r,CancellationToken ct)=>ApplyFilters(db.Classifications.AsNoTracking(),r).CountAsync(ct); public Task<Classification?> GetByIdAsync(string id,bool tracking,CancellationToken ct)=>(tracking?db.Classifications:db.Classifications.AsNoTracking()).FirstOrDefaultAsync(x=>x.Id==id,ct); public async Task<ClassificationCatalogValues> GetCatalogsAsync(CancellationToken ct)=>new(await db.Classifications.AsNoTracking().Select(x=>x.FiscalYear).Distinct().OrderBy(x=>x).ToListAsync(ct)); public Task<bool> ExistsDuplicateAsync(int y,string m,string i,DateOnly d,string e,string? ex,CancellationToken ct)=>db.Classifications.AsNoTracking().AnyAsync(x=>x.FiscalYear==y&&x.Market==m&&x.Instrument==i&&x.PaymentDate==d&&x.EventSequence==e&&(ex==null||x.Id!=ex),ct); public Task AddAsync(Classification c,CancellationToken ct)=>db.Classifications.AddAsync(c,ct).AsTask(); public void Update(Classification c,byte[]? rv){if(rv is not null)db.Entry(c).Property(x=>x.RowVersion).OriginalValue=rv;} public void Remove(Classification c,byte[]? rv){if(rv is not null)db.Entry(c).Property(x=>x.RowVersion).OriginalValue=rv;db.Classifications.Remove(c);} public async Task SaveChangesAsync(CancellationToken ct){try{await db.SaveChangesAsync(ct);}catch(DbUpdateConcurrencyException ex){throw new NuamExchange.Application.Exceptions.ConcurrencyException("La calificación fue modificada por otro proceso.");}}
- static IQueryable<Classification> ApplyFilters(IQueryable<Classification> q,ClassificationListRequest r){if(!string.IsNullOrWhiteSpace(r.Search))q=q.Where(x=>x.Instrument.Contains(r.Search)||x.Description.Contains(r.Search)||x.EventSequence.Contains(r.Search)); if(!string.IsNullOrWhiteSpace(r.Market))q=q.Where(x=>x.Market==r.Market); if(!string.IsNullOrWhiteSpace(r.Source))q=q.Where(x=>x.Source==r.Source); if(r.FiscalYear is not null)q=q.Where(x=>x.FiscalYear==r.FiscalYear); if(r.Status is not null)q=q.Where(x=>x.Status==r.Status); return q;} static IQueryable<Classification> ApplySort(IQueryable<Classification> q,ClassificationListRequest r)=> (r.SortBy,r.SortDirection) switch {("fiscalYear","asc")=>q.OrderBy(x=>x.FiscalYear),("fiscalYear",_)=>q.OrderByDescending(x=>x.FiscalYear),("instrument","asc")=>q.OrderBy(x=>x.Instrument),("instrument",_)=>q.OrderByDescending(x=>x.Instrument),("amount","asc")=>q.OrderBy(x=>x.Amount),("amount",_)=>q.OrderByDescending(x=>x.Amount),("status","asc")=>q.OrderBy(x=>x.Status),("status",_)=>q.OrderByDescending(x=>x.Status),("paymentDate","asc")=>q.OrderBy(x=>x.PaymentDate),_=>q.OrderByDescending(x=>x.PaymentDate)}; }
+
+public sealed class ClassificationRepository(NuamExchangeDbContext db) : IClassificationRepository
+{
+    public async Task<IReadOnlyList<Classification>> ListAsync(ClassificationListRequest request, CancellationToken ct) =>
+        await ApplySort(ApplyFilters(db.Classifications.AsNoTracking(), request), request)
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToListAsync(ct);
+
+    public Task<int> CountAsync(ClassificationListRequest request, CancellationToken ct) =>
+        ApplyFilters(db.Classifications.AsNoTracking(), request).CountAsync(ct);
+
+    public Task<Classification?> GetByIdAsync(string id, bool tracking, CancellationToken ct) =>
+        (tracking ? db.Classifications : db.Classifications.AsNoTracking()).FirstOrDefaultAsync(classification => classification.Id == id, ct);
+
+    public async Task<ClassificationCatalogValues> GetCatalogsAsync(CancellationToken ct) =>
+        new(await db.Classifications
+            .AsNoTracking()
+            .Select(classification => classification.FiscalYear)
+            .Distinct()
+            .OrderBy(fiscalYear => fiscalYear)
+            .ToListAsync(ct));
+
+    public Task<bool> ExistsDuplicateAsync(
+        int fiscalYear,
+        string market,
+        string instrument,
+        DateOnly paymentDate,
+        string eventSequence,
+        string? excludeId,
+        CancellationToken ct) =>
+        db.Classifications
+            .AsNoTracking()
+            .AnyAsync(
+                classification => classification.FiscalYear == fiscalYear
+                    && classification.Market == market
+                    && classification.Instrument == instrument
+                    && classification.PaymentDate == paymentDate
+                    && classification.EventSequence == eventSequence
+                    && (excludeId == null || classification.Id != excludeId),
+                ct);
+
+    public Task AddAsync(Classification classification, CancellationToken ct) =>
+        db.Classifications.AddAsync(classification, ct).AsTask();
+
+    public void Update(Classification classification, byte[]? originalRowVersion)
+    {
+        if (originalRowVersion is not null)
+        {
+            db.Entry(classification).Property(entity => entity.RowVersion).OriginalValue = originalRowVersion;
+        }
+    }
+
+    public void Remove(Classification classification, byte[]? originalRowVersion)
+    {
+        if (originalRowVersion is not null)
+        {
+            db.Entry(classification).Property(entity => entity.RowVersion).OriginalValue = originalRowVersion;
+        }
+
+        db.Classifications.Remove(classification);
+    }
+
+    public async Task SaveChangesAsync(CancellationToken ct)
+    {
+        try
+        {
+            await db.SaveChangesAsync(ct);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConcurrencyException("La calificación fue modificada por otro proceso.");
+        }
+    }
+
+    private static IQueryable<Classification> ApplyFilters(IQueryable<Classification> query, ClassificationListRequest request)
+    {
+        if (!string.IsNullOrWhiteSpace(request.Search))
+        {
+            query = query.Where(classification => classification.Instrument.Contains(request.Search)
+                || classification.Description.Contains(request.Search)
+                || classification.EventSequence.Contains(request.Search));
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Market))
+        {
+            query = query.Where(classification => classification.Market == request.Market);
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Source))
+        {
+            query = query.Where(classification => classification.Source == request.Source);
+        }
+
+        if (request.FiscalYear is not null)
+        {
+            query = query.Where(classification => classification.FiscalYear == request.FiscalYear);
+        }
+
+        if (request.Status is not null)
+        {
+            query = query.Where(classification => classification.Status == request.Status);
+        }
+
+        return query;
+    }
+
+    private static IQueryable<Classification> ApplySort(IQueryable<Classification> query, ClassificationListRequest request) =>
+        (request.SortBy, request.SortDirection) switch
+        {
+            ("fiscalYear", "asc") => query.OrderBy(classification => classification.FiscalYear),
+            ("fiscalYear", _) => query.OrderByDescending(classification => classification.FiscalYear),
+            ("instrument", "asc") => query.OrderBy(classification => classification.Instrument),
+            ("instrument", _) => query.OrderByDescending(classification => classification.Instrument),
+            ("amount", "asc") => query.OrderBy(classification => classification.Amount),
+            ("amount", _) => query.OrderByDescending(classification => classification.Amount),
+            ("status", "asc") => query.OrderBy(classification => classification.Status),
+            ("status", _) => query.OrderByDescending(classification => classification.Status),
+            ("paymentDate", "asc") => query.OrderBy(classification => classification.PaymentDate),
+            _ => query.OrderByDescending(classification => classification.PaymentDate),
+        };
+}
