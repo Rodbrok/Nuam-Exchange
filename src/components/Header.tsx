@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+import { useSession } from '../app/session/useSession';
+
 interface HeaderProps {
   isCollapsed: boolean;
   onToggleSidebar: () => void;
@@ -5,6 +8,14 @@ interface HeaderProps {
 }
 
 export function Header({ isCollapsed, onToggleSidebar, onToggleMobile }: HeaderProps) {
+  const navigate = useNavigate();
+  const { logout, user } = useSession();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <header className="app-header">
       <div className="header-actions">
@@ -20,8 +31,11 @@ export function Header({ isCollapsed, onToggleSidebar, onToggleMobile }: HeaderP
         </div>
       </div>
       <div className="user-area">
-        <span>Usuario Administrador</span>
-        <button type="button" className="secondary-button">Cerrar sesión</button>
+        <span className="user-summary">
+          <strong>{user?.nombre}</strong>
+          <small>{user?.rol}</small>
+        </span>
+        <button type="button" className="secondary-button" onClick={handleLogout}>Cerrar sesión</button>
       </div>
     </header>
   );

@@ -1,28 +1,61 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppLayout } from '../layouts/AppLayout';
+import { AccessDeniedPage } from '../pages/AccessDeniedPage';
 import { InicioPage } from '../pages/InicioPage';
 import { LoginPage } from '../pages/LoginPage';
 import { PlaceholderPage } from '../components/PlaceholderPage';
+import { ProtectedRoute } from './ProtectedRoute';
+import { useSession } from '../app/session/useSession';
 
 export function AppRoutes() {
+  const { isAuthenticated } = useSession();
+  const fallbackPath = isAuthenticated ? '/inicio' : '/login';
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route element={<AppLayout />}>
-        <Route path="/inicio" element={<InicioPage />} />
-        <Route path="/calificaciones" element={<PlaceholderPage title="Calificaciones Tributarias" description="Listado futuro de calificaciones tributarias." />} />
-        <Route path="/calificaciones/nueva" element={<PlaceholderPage title="Nueva Calificación" description="Formulario futuro para registrar calificaciones tributarias." />} />
-        <Route path="/calificaciones/:id/editar" element={<PlaceholderPage title="Editar Calificación" description="Ruta preparada para editar una calificación mediante parámetro." />} />
-        <Route path="/cargas/x-factor" element={<PlaceholderPage title="Carga X Factor" description="Módulo futuro para carga de archivo X Factor." />} />
-        <Route path="/cargas/x-monto" element={<PlaceholderPage title="Carga X Monto" description="Módulo futuro para carga de archivo X Monto." />} />
-        <Route path="/plantillas-carga" element={<PlaceholderPage title="Plantillas de carga" description="Administración futura de plantillas de carga." />} />
-        <Route path="/reportes" element={<PlaceholderPage title="Reportes" description="Consulta futura de reportes tributarios." />} />
-        <Route path="/administracion/usuarios" element={<PlaceholderPage title="Usuarios" description="Administración futura de usuarios." />} />
-        <Route path="/administracion/roles-permisos" element={<PlaceholderPage title="Roles y Permisos" description="Administración futura de roles y permisos." />} />
-        <Route path="/auditoria" element={<PlaceholderPage title="Auditoría" description="Consulta futura de trazabilidad y auditoría." />} />
-        <Route path="/respaldos" element={<PlaceholderPage title="Respaldos" description="Gestión futura de respaldos." />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          <Route path="/sin-acceso" element={<AccessDeniedPage />} />
+          <Route element={<ProtectedRoute routePath="/inicio" />}>
+            <Route path="/inicio" element={<InicioPage />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/calificaciones" />}>
+            <Route path="/calificaciones" element={<PlaceholderPage title="Calificaciones Tributarias" description="Listado futuro de calificaciones tributarias." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/calificaciones/nueva" />}>
+            <Route path="/calificaciones/nueva" element={<PlaceholderPage title="Nueva Calificación" description="Formulario futuro para registrar calificaciones tributarias." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/calificaciones/:id/editar" />}>
+            <Route path="/calificaciones/:id/editar" element={<PlaceholderPage title="Editar Calificación" description="Ruta preparada para editar una calificación mediante parámetro." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/cargas/x-factor" />}>
+            <Route path="/cargas/x-factor" element={<PlaceholderPage title="Carga X Factor" description="Módulo futuro para carga de archivo X Factor." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/cargas/x-monto" />}>
+            <Route path="/cargas/x-monto" element={<PlaceholderPage title="Carga X Monto" description="Módulo futuro para carga de archivo X Monto." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/plantillas-carga" />}>
+            <Route path="/plantillas-carga" element={<PlaceholderPage title="Plantillas de carga" description="Administración futura de plantillas de carga." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/reportes" />}>
+            <Route path="/reportes" element={<PlaceholderPage title="Reportes" description="Consulta futura de reportes tributarios." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/administracion/usuarios" />}>
+            <Route path="/administracion/usuarios" element={<PlaceholderPage title="Usuarios" description="Administración futura de usuarios." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/administracion/roles-permisos" />}>
+            <Route path="/administracion/roles-permisos" element={<PlaceholderPage title="Roles y Permisos" description="Administración futura de roles y permisos." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/auditoria" />}>
+            <Route path="/auditoria" element={<PlaceholderPage title="Auditoría" description="Consulta futura de trazabilidad y auditoría." />} />
+          </Route>
+          <Route element={<ProtectedRoute routePath="/respaldos" />}>
+            <Route path="/respaldos" element={<PlaceholderPage title="Respaldos" description="Gestión futura de respaldos." />} />
+          </Route>
+        </Route>
       </Route>
-      <Route path="*" element={<Navigate to="/inicio" replace />} />
+      <Route path="*" element={<Navigate to={fallbackPath} replace />} />
     </Routes>
   );
 }
