@@ -122,3 +122,11 @@ El módulo `src/features/backups` implementa la gestión visual de respaldos. El
 Los diálogos de auditoría, creación, restauración, manifiesto y confirmación declaran `role="dialog"`, `aria-modal`, foco inicial y cierre por Escape. Las tablas incluyen caption, `aria-sort`, scroll horizontal y paginación. Los permisos efectivos de `/auditoria` y `/respaldos` siguen centralizados en `ProtectedRoute` y `navigation.ts`, únicamente para Administrador.
 
 Seguridad: no se crean APIs, backend, base de datos, archivos de respaldo, ZIP, tareas programadas ni restauraciones reales. No se usan `fetch`, Axios, almacenamiento web, `dangerouslySetInnerHTML`, secretos ni rutas de infraestructura. Para la integración futura con ASP.NET Core .NET 8 se esperan servicios de auditoría paginada, exportación server-side, catálogo de respaldos, ejecución de trabajos controlados, manifiestos y política persistente con autorización real por rol.
+
+## Capa API preparada
+
+Prompt 009 agrega `src/api` como frontera de integración. `apiConfig` centraliza la lectura de variables Vite y expone `dataSource`, `baseUrl`, `timeoutMs`, `isMock` e `isApi`. Ningún componente debe leer `import.meta.env` directamente.
+
+`ApiServicesProvider` construye una vez los servicios con `useMemo`. En modo `mock` usa adaptadores mock y no realiza HTTP; en modo `api` usa `HttpClient` con `fetch`, `AbortController`, timeout, `x-correlation-id`, JSON, ProblemDetails y FormData. Los mappers convierten DTOs camelCase/ISO a los nombres visuales del dominio.
+
+La migración gradual inicia con Calificaciones: `ClassificationsPage` usa `useClassificationsQuery`, cancela solicitudes anteriores, evita race conditions y muestra loading/error/empty sin filtrar ni paginar nuevamente en el componente. Los demás módulos continúan simulados hasta prompts posteriores.

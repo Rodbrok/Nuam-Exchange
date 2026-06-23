@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { Header } from '../components/Header';
+import { DataSourceIndicator } from '../components/DataSourceIndicator';
 import { Sidebar } from '../components/Sidebar';
 
 export function AppLayout() {
@@ -23,7 +24,7 @@ export function AppLayout() {
           onToggleMobile={() => setIsMobileOpen((current) => !current)}
         />
         <main className="main-area">
-          <Breadcrumbs />
+          <div className="main-meta"><Breadcrumbs /><DataSourceIndicator /></div>
           <Outlet />
         </main>
       </div>

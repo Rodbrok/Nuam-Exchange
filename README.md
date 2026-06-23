@@ -122,3 +122,34 @@ El frontend incorpora `/auditoria` como módulo administrativo simulado para con
 También incorpora `/respaldos` como gestión visual simulada de respaldos: filtros, resumen, tabla ordenable y paginada, creación de respaldos en memoria con progreso, restauración simulada con confirmación escrita, cancelación de ejecuciones en proceso o programadas, descarga de manifiestos CSV de metadatos y política de respaldo editable solo en memoria.
 
 Ambos módulos están restringidos al rol Administrador mediante `ProtectedRoute`; Analista Tributario y Supervisor no ven los enlaces ni pueden acceder directamente. La aplicación muestra un indicador reutilizable de Modo demostración para recordar que usa datos ficticios, no tiene persistencia ni conexión al backend. No existe backend, API, base de datos ni respaldos reales; el estado final del frontend queda preparado para contratos e integración futura con ASP.NET Core .NET 8.
+
+## Prompt 009: contratos API y modo de datos
+
+El frontend funciona en dos modos Vite excluyentes. `mock` es el valor predeterminado y no realiza solicitudes HTTP; conserva login, dashboard, calificaciones, cargas, reportes, administración, auditoría y respaldos con datos simulados. `api` activa la capa HTTP preparada contra `VITE_API_BASE_URL` y falla de forma controlada si todavía no existe backend.
+
+Variables disponibles en `.env.example`:
+
+```env
+VITE_DATA_SOURCE=mock
+VITE_API_BASE_URL=/api/v1
+VITE_API_TIMEOUT_MS=10000
+```
+
+Ejemplo PowerShell en modo mock:
+
+```powershell
+$env:VITE_DATA_SOURCE="mock"
+npm run dev
+```
+
+Ejemplo PowerShell en modo API:
+
+```powershell
+$env:VITE_DATA_SOURCE="api"
+$env:VITE_API_BASE_URL="https://localhost:7001/api/v1"
+npm run dev
+```
+
+La capa `src/api` separa configuración, contratos DTO, `HttpClient` con `fetch`, mapeadores, servicios mock/HTTP y `ApiServicesProvider`. La migración piloto corresponde a Calificaciones: la lista consume `ClassificationsService`, usa paginación de servidor, catálogos del servicio, cancelación, timeout y mensajes de error amigables. Los formularios de creación, edición y copia siguen en modo demostrativo.
+
+La especificación provisional está en `docs/api/openapi.yaml`; los acuerdos generales están en `docs/api/contratos_api.md` y las recomendaciones para ASP.NET Core Web API .NET 8 están en `docs/api/integracion_aspnet_core.md`. No se incluye backend, SQL Server ni autenticación real en esta etapa.
