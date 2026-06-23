@@ -4,6 +4,8 @@ import { AccessDeniedPage } from '../pages/AccessDeniedPage';
 import { InicioPage } from '../pages/InicioPage';
 import { LoginPage } from '../pages/LoginPage';
 import { PlaceholderPage } from '../components/PlaceholderPage';
+import { UsersAdministrationPage } from '../pages/UsersAdministrationPage';
+import { RolesPermissionsPage } from '../pages/RolesPermissionsPage';
 import { ReportsPage } from '../pages/ReportsPage';
 import { ClassificationsPage } from '../pages/ClassificationsPage';
 import { ClassificationCreatePage } from '../pages/ClassificationCreatePage';
@@ -53,10 +55,10 @@ export function AppRoutes() {
             <Route path="/reportes" element={<ReportsPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/administracion/usuarios" />}>
-            <Route path="/administracion/usuarios" element={<PlaceholderPage title="Usuarios" description="Administración futura de usuarios." />} />
+            <Route path="/administracion/usuarios" element={<UsersAdministrationPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/administracion/roles-permisos" />}>
-            <Route path="/administracion/roles-permisos" element={<PlaceholderPage title="Roles y Permisos" description="Administración futura de roles y permisos." />} />
+            <Route path="/administracion/roles-permisos" element={<RolesPermissionsPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/auditoria" />}>
             <Route path="/auditoria" element={<PlaceholderPage title="Auditoría" description="Consulta futura de trazabilidad y auditoría." />} />

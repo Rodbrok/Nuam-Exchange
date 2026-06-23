@@ -167,3 +167,16 @@ Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo
 **Limitaciones:** datos simulados en memoria; sin backend, API, persistencia ni detalle individual nuevo.
 
 **Próximo paso:** Prompt 007 — Administración de usuarios, roles y permisos.
+
+## Prompt 007 — Administración de usuarios, roles y permisos
+
+- **Objetivo:** reemplazar placeholders administrativos por pantallas simuladas para usuarios, roles y permisos.
+- **Archivos creados:** tipos de administración y permisos, mocks de usuarios administrativos, componentes reutilizables del módulo `administration` y páginas `UsersAdministrationPage` y `RolesPermissionsPage`.
+- **Archivos modificados:** rutas principales, `StatusBadge`, estilos globales y documentación.
+- **Funcionalidades:** consulta, filtros, ordenamiento, paginación, creación, edición, cambios de estado, restablecimiento simulado y exportación CSV de usuarios; selector de roles, resumen y matriz de permisos demostrativa.
+- **Validaciones:** nombre obligatorio de 3 a 80 caracteres, correo válido normalizado a minúsculas, correo único, rol y estado obligatorios.
+- **Permisos:** Administrador mantiene acceso total y bloqueado; Analista Tributario y Supervisor pueden editar copias locales demostrativas con dependencias sobre el permiso Ver.
+- **Seguridad:** no se manejan contraseñas, tokens, JWT, secretos, fetch, Axios, localStorage ni sessionStorage; no se modifica la sesión activa ni ProtectedRoute.
+- **Pruebas:** se ejecutaron `git diff --check`, `git status --short`, `npm ci`, `npm run lint` y `npm run build`.
+- **Limitaciones:** sin backend, API, base de datos ni persistencia permanente; los cambios se pierden al recargar.
+- **Próximo paso:** Prompt 008 — Auditoría, respaldos y cierre visual del frontend.

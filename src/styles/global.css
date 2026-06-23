@@ -160,3 +160,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .report-filters { grid-template-columns: repeat(4, minmax(130px, 1fr)); }
 @media (max-width: 1100px) { .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .charts-grid, .reports-summary { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .metrics-grid { grid-template-columns: 1fr; } .bar-row div:first-child { display: grid; } }
+.admin-page { display: grid; gap: var(--space-4); }
+.admin-summary, .role-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+.admin-summary div, .role-summary div { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3); box-shadow: var(--shadow-soft); }
+.admin-summary dt, .role-summary dt { color: var(--color-text-muted); font-size: 12px; font-weight: 700; }
+.admin-summary dd, .role-summary dd { margin: 4px 0 0; color: var(--color-primary-dark); font-weight: 700; }
+.admin-filters { grid-template-columns: repeat(3, minmax(160px, 1fr)) auto auto; }
+.admin-table { min-width: 1260px; }
+.row-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.row-actions small { color: var(--color-text-muted); width: 100%; }
+.admin-dialog { width: min(620px, 100%); }
+.dialog-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.permissions-panel { display: grid; gap: var(--space-3); background: var(--color-surface-muted); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); }
+.permission-table { min-width: 980px; }
+.permission-table th:first-child { min-width: 180px; }
+.permission-table input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--color-primary); }
+.status-activo::before { background: var(--color-success); }
+.status-inactivo::before { background: var(--color-warning); }
+.status-bloqueado::before { background: var(--color-danger); }
+@media (max-width: 900px) { .admin-summary, .role-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-filters { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .admin-summary, .role-summary, .dialog-form { grid-template-columns: 1fr; } }

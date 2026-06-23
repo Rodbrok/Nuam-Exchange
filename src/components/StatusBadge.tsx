@@ -1,7 +1,8 @@
-import type { ClassificationStatus } from '../types/classification';
-
-interface StatusBadgeProps { status: ClassificationStatus; }
+interface StatusBadgeProps {
+  status: string;
+}
 
 export function StatusBadge({ status }: StatusBadgeProps) {
-  return <span className={`status-badge status-${status.toLowerCase()}`}>{status}</span>;
+  const className = status.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
+  return <span className={`status-badge status-${className}`}>{status}</span>;
 }
