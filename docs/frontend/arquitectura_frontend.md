@@ -55,3 +55,19 @@ La matriz de permisos se define en `src/routes/navigation.ts` mediante `rolePerm
 ## Limitaciones del login actual
 
 El login es una simulación de frontend. No realiza llamadas HTTP, no valida contra backend, no usa JWT, no persiste datos y no documenta contraseñas fijas. El valor escrito en el campo de contraseña se usa únicamente para validar que no esté vacío durante el envío del formulario.
+
+## Listado de Calificaciones Tributarias
+
+El módulo `/calificaciones` usa la página `ClassificationsPage` y reemplaza el placeholder por una consulta administrativa con información mockeada. El modelo compartido `Classification` define `id`, `mercado`, `origen`, `ejercicio`, `instrumento`, `fechaPago`, `descripcion`, `secuenciaEvento`, `factorActualizacion`, `monto` y `estado`, junto con tipos auxiliares para filtros, ordenamiento y paginación.
+
+Los datos ficticios viven en `src/mocks/classifications.ts`. Cubren mercados Acciones, Renta Fija y Fondos; orígenes Manual, Carga X Factor y Carga X Monto; ejercicios 2024, 2025 y 2026; estados Vigente, Pendiente, Observada y Rechazada; factores y montos variables. No representan información real ni privada.
+
+El flujo de filtros separa valores en edición y valores aplicados. La tabla no filtra al escribir: el botón Buscar aplica los criterios en memoria y vuelve a la primera página; Limpiar restaura los valores iniciales y también vuelve a la primera página. El texto libre busca en instrumento, descripción y secuencia de evento.
+
+El ordenamiento se resuelve sin librerías externas por ejercicio, instrumento, fecha de pago, monto y estado. El primer clic deja la columna en ascendente y el segundo en descendente; el estado se mantiene al cambiar de página y se expone con `aria-sort`.
+
+La paginación reutilizable recibe estado tipado, total de registros, cambio de página y cambio de tamaño. Permite 5, 10 y 20 registros por página, deshabilita navegación en extremos y muestra el rango visible.
+
+Las acciones principales respetan los roles ya existentes sin modificar la matriz de permisos. Administrador y Analista Tributario pueden ver acciones visuales de ingresar, modificar, eliminar, copiar, cargas y opciones. Supervisor no ve ingresar, modificar, eliminar ni copiar, pero sí puede consultar, seleccionar registros, acceder a cargas y usar opciones. Eliminar y copiar no ejecutan persistencia; solo muestran mensajes accesibles.
+
+Los estados de vista son componentes reutilizables: `LoadingState` simula una carga breve al entrar y cancela su temporizador al desmontar, `EmptyState` aparece cuando no hay resultados filtrados y `ErrorState` se activa por un selector temporal llamado Estado de demostración. Estos estados no hacen llamadas HTTP y serán reemplazados o conectados a la API en prompts posteriores.

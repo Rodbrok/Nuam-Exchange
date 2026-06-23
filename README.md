@@ -70,3 +70,13 @@ Perfiles disponibles:
 - Supervisor: acceso a inicio, calificaciones, cargas, plantillas y reportes, sin alta ni edición de calificaciones.
 
 Esta implementación no crea credenciales reales, no guarda contraseñas, no utiliza `localStorage`, `sessionStorage`, cookies, API, JWT ni llamadas HTTP. El campo de contraseña es solamente visual y exige contenido no vacío para simular el flujo.
+
+## Listado mockeado de Calificaciones Tributarias
+
+La ruta `/calificaciones` reemplaza el placeholder por una consulta administrativa funcional con datos ficticios en memoria. Incluye filtros por mercado, origen, ejercicio, estado y texto libre; el texto busca en instrumento, descripción y secuencia de evento solamente al presionar **Buscar**. **Limpiar** restablece los filtros y vuelve a la primera página.
+
+La tabla permite selección única de registros, ordenamiento por ejercicio, instrumento, fecha de pago, monto y estado, scroll horizontal, badges de estado y formato de montos `es-CL`. La paginación permite 5, 10 o 20 registros por página y muestra el rango visible.
+
+Las acciones visuales se muestran según el rol activo: Administrador y Analista Tributario ven ingreso, modificación, eliminación, copia, cargas y opciones; Supervisor conserva consulta, selección, cargas y opciones. Las acciones de eliminación, copia y opciones solo muestran mensajes informativos; las rutas de ingreso, edición y cargas navegan a pantallas preparadas sin guardar información.
+
+No existe backend, API, persistencia, `fetch`, Axios, CRUD real ni almacenamiento local para este listado. Los estados loading, empty y error son visuales; el error se activa desde un control temporal de demostración que será retirado al integrar la API.

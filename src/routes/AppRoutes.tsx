@@ -4,6 +4,7 @@ import { AccessDeniedPage } from '../pages/AccessDeniedPage';
 import { InicioPage } from '../pages/InicioPage';
 import { LoginPage } from '../pages/LoginPage';
 import { PlaceholderPage } from '../components/PlaceholderPage';
+import { ClassificationsPage } from '../pages/ClassificationsPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useSession } from '../app/session/useSession';
 
@@ -21,7 +22,7 @@ export function AppRoutes() {
             <Route path="/inicio" element={<InicioPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/calificaciones" />}>
-            <Route path="/calificaciones" element={<PlaceholderPage title="Calificaciones Tributarias" description="Listado futuro de calificaciones tributarias." />} />
+            <Route path="/calificaciones" element={<ClassificationsPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/calificaciones/nueva" />}>
             <Route path="/calificaciones/nueva" element={<PlaceholderPage title="Nueva Calificación" description="Formulario futuro para registrar calificaciones tributarias." />} />
