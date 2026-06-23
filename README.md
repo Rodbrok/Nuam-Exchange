@@ -108,3 +108,9 @@ La aplicación incorpora un Dashboard real en `/inicio` con indicadores derivado
 La ruta `/reportes` reemplaza el placeholder por reportes simulados de Calificaciones y Cargas. Cada reporte permite generar resultados filtrados, limpiar filtros, ordenar columnas, paginar en 5, 10 o 20 registros y exportar CSV. La exportación usa UTF-8 con BOM, separador punto y coma, escape de celdas, protección ante fórmulas de planilla y liberación de URL temporal.
 
 Los datos siguen siendo simulados: no existe backend, API, persistencia, fetch ni almacenamiento local. La integración futura deberá reemplazar los mocks por servicios autenticados manteniendo las validaciones de accesibilidad y seguridad.
+
+## Prompt 007 — Administración simulada
+
+Se incorporan módulos visuales para `/administracion/usuarios` y `/administracion/roles-permisos`. La administración de usuarios permite consultar cuentas ficticias, filtrar por texto, rol y estado, ordenar, paginar, crear y editar usuarios en memoria, activar, desactivar, bloquear, desbloquear y simular restablecimiento de acceso sin manejar contraseñas ni credenciales. También exporta los resultados filtrados a CSV mediante la utilidad compartida, manteniendo BOM UTF-8, separador punto y coma y protección contra fórmulas.
+
+Los roles disponibles son fijos: Administrador, Analista Tributario y Supervisor. La matriz de permisos es demostrativa, editable solo para Analista y Supervisor, con permisos del Administrador bloqueados como control total. Los cambios son locales, no persisten al recargar y no modifican la sesión activa, `ProtectedRoute` ni los permisos efectivos de navegación. No existe backend, API, base de datos ni persistencia permanente en esta implementación.

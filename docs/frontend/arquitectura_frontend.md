@@ -104,3 +104,11 @@ El módulo `src/features/reports` contiene filtros, selector de tipo, resúmenes
 La exportación CSV segura vive en `src/utils/csvExport.ts` y es reutilizada por reportes y plantillas/cargas. Genera UTF-8 con BOM, separador punto y coma, escape de comillas, neutralización de fórmulas (`=`, `+`, `-`, `@`) y revocación de object URL.
 
 Permisos por rol: todos acceden a `/inicio` y `/reportes`. Administrador ve acciones administrativas, Analista Tributario ve acciones operativas y Supervisor solo acciones de consulta/revisión. La integración futura con backend debería sustituir mocks por endpoints protegidos sin cambiar la separación entre utilidades y componentes.
+
+## Prompt 007 — Módulo `administration`
+
+El módulo `src/features/administration` concentra la administración simulada de usuarios, roles y permisos. El modelo `AdministrationUser` define `id`, `nombre`, `email`, `rol`, `estado`, `fechaCreacion`, `ultimoAcceso` y `creadoPor`; sus estados permitidos son Activo, Inactivo y Bloqueado. Las validaciones viven en `administrationValidation.ts` y normalizan correos a minúsculas, exigen nombre de 3 a 80 caracteres, formato de correo y unicidad excluyendo el usuario editado.
+
+`UsersAdministrationPage` mantiene el estado en memoria para filtros aplicados, borradores, ordenamiento, paginación, usuarios, diálogos y mensajes. Los diálogos React reemplazan confirmaciones nativas, usan `role="dialog"`, `aria-modal`, cierre con Escape y mensajes accesibles. La sesión activa queda protegida: no puede cambiar su propio rol ni estado desde la simulación y no se modifica el `SessionProvider`.
+
+El catálogo tipado de permisos vive en `permissionCatalog.ts` y define módulos, acciones, permisos predeterminados por rol y dependencias. `RolesPermissionsPage` edita una copia local de la matriz para Analista Tributario y Supervisor; Administrador se muestra bloqueado como rol de control total. Esta matriz es únicamente visual: la seguridad efectiva continúa en `ProtectedRoute` y deberá integrarse con validaciones y persistencia del backend futuro.
