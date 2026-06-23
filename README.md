@@ -88,3 +88,15 @@ Las rutas `/calificaciones/nueva`, `/calificaciones/:id/editar` y `/calificacion
 El factor de actualización se calcula automáticamente en memoria con un catálogo mock por ejercicio y mes. Es un cálculo referencial de demostración: no es una fórmula tributaria real, no debe usarse en producción y no proviene de una API oficial. La conversión de fechas entre `dd-MM-yyyy` y `yyyy-MM-dd` se realiza sin librerías externas.
 
 Los envíos exitosos solo muestran un resumen visual de valores procesados. No se modifica el mock, no se persiste información, no se utiliza backend, no hay llamadas HTTP y no se usa `localStorage` ni `sessionStorage`.
+
+## Cargas masivas CSV provisionales
+
+El frontend incluye pantallas demostrativas para **Carga X Factor**, **Carga X Monto** y **Plantillas de carga**. El formato es provisional: el contrato definitivo será entregado por backend.
+
+- Soporte real únicamente para archivos `.csv` seleccionados o arrastrados en el navegador, sin carga a servidor.
+- Validación de extensión, archivo no vacío, tamaño máximo de 5 MB y máximo 1.000 filas de datos.
+- Parser CSV propio con separador `;` o `,`, BOM UTF-8, saltos LF/CRLF, campos con comillas y comillas escapadas.
+- Vista previa de hasta 100 filas, filtros por estado, resumen de registros válidos/con error y reporte CSV de errores.
+- Procesamiento simulado con progreso: no realiza `fetch`, no guarda archivos y no persiste datos.
+- Supervisor accede a una vista de revisión mockeada y no puede seleccionar ni procesar nuevos archivos.
+- Las plantillas CSV se generan en el navegador con BOM UTF-8 y separador punto y coma.

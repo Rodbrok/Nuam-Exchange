@@ -81,3 +81,16 @@ La validación está separada en `classificationValidation.ts` y cubre obligator
 El factor se calcula en `mockFactorCalculator.ts` usando un catálogo ficticio por ejercicio y mes. Es una simulación frontend referencial, no una regla tributaria real, no proviene de API oficial y deberá reemplazarse por reglas del backend cuando exista integración.
 
 Las rutas `/calificaciones/nueva`, `/calificaciones/:id/editar` y `/calificaciones/:id/copiar` se protegen con la matriz centralizada de `rolePermissions`. Administrador y Analista Tributario pueden acceder a las tres rutas; Supervisor queda redirigido a `/sin-acceso`. Los estados contemplados son carga inicial en editar/copiar, formulario listo, procesamiento, éxito simulado, errores de validación y registro no encontrado. No existe persistencia ni modificación permanente de mocks.
+
+## Módulo uploads — Prompt 005
+
+El módulo `src/features/uploads` concentra la demostración de cargas masivas para X Factor y X Monto. Las páginas reutilizan una misma pantalla base y cambian su comportamiento mediante configuraciones centralizadas.
+
+- `uploadConfigs.ts` define columnas canónicas, ejemplos, reglas visibles y mensajes de formato provisional.
+- `uploadParser.ts` implementa un parser CSV propio sin dependencias externas, con detección de coma/punto y coma, BOM UTF-8, comillas, comillas escapadas y líneas vacías ignoradas.
+- `uploadValidation.ts` separa validación de archivo, estructura, encabezados y filas. Las filas duplicadas se detectan por ejercicio, mercado, instrumento, fecha de pago y secuencia de evento.
+- `uploadTemplateUtils.ts` genera plantillas y reportes de errores CSV con escapes y mitigación de fórmulas de planilla.
+- `uploadPermissions.ts` centraliza permisos: Administrador y Analista Tributario procesan; Supervisor revisa mocks.
+- `UploadReviewPanel` usa `src/mocks/uploadReview.ts` con datos ficticios para la vista de Supervisor.
+
+No existe backend, API, persistencia, `fetch`, Excel real ni almacenamiento local. La integración futura con backend deberá reemplazar el procesamiento simulado por contratos formales de carga, manteniendo las validaciones frontend como apoyo y no como control definitivo.
