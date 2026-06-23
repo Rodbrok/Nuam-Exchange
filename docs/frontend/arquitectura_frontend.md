@@ -94,3 +94,13 @@ El módulo `src/features/uploads` concentra la demostración de cargas masivas p
 - `UploadReviewPanel` usa `src/mocks/uploadReview.ts` con datos ficticios para la vista de Supervisor.
 
 No existe backend, API, persistencia, `fetch`, Excel real ni almacenamiento local. La integración futura con backend deberá reemplazar el procesamiento simulado por contratos formales de carga, manteniendo las validaciones frontend como apoyo y no como control definitivo.
+
+## Prompt 006: Dashboard, vista consolidada y reportes simulados
+
+El módulo `src/features/dashboard` centraliza presentación y cálculo del Dashboard. `dashboardUtils.ts` filtra calificaciones por ejercicio/mercado, calcula indicadores desde mocks y arma series para gráficos accesibles. Los gráficos usan barras CSS, etiquetas visibles, porcentajes y alternativa textual; no incorporan canvas ni librerías externas.
+
+El módulo `src/features/reports` contiene filtros, selector de tipo, resúmenes, tablas, ordenamiento, paginación y exportación. Los filtros se aplican solo al generar reporte; las fechas validan que desde no sea posterior a hasta y exponen errores con `role="alert"`. Las tablas tienen caption, `aria-sort`, scroll horizontal y paginación reutilizada.
+
+La exportación CSV segura vive en `src/utils/csvExport.ts` y es reutilizada por reportes y plantillas/cargas. Genera UTF-8 con BOM, separador punto y coma, escape de comillas, neutralización de fórmulas (`=`, `+`, `-`, `@`) y revocación de object URL.
+
+Permisos por rol: todos acceden a `/inicio` y `/reportes`. Administrador ve acciones administrativas, Analista Tributario ve acciones operativas y Supervisor solo acciones de consulta/revisión. La integración futura con backend debería sustituir mocks por endpoints protegidos sin cambiar la separación entre utilidades y componentes.

@@ -147,3 +147,23 @@ Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo
 **Limitaciones:** no hay backend, API, persistencia, Excel real ni contrato tributario definitivo.
 
 **Próximo paso:** Prompt 006 — Dashboard, vista consolidada y reportes simulados.
+
+## Prompt 006 — Dashboard, vista consolidada y reportes simulados
+
+**Objetivo:** implementar Dashboard en `/inicio`, vista consolidada y reportes simulados en `/reportes`, sin backend ni persistencia.
+
+**Archivos creados:** componentes y utilidades de `src/features/dashboard`, componentes y utilidades de `src/features/reports`, tipos `dashboard.ts` y `report.ts`, mock complementario `dashboardActivity.ts`, utilidad compartida `csvExport.ts` y página `ReportsPage.tsx`.
+
+**Archivos modificados:** `InicioPage.tsx`, `AppRoutes.tsx`, `uploadParser.ts`, `uploadTemplateUtils.ts`, estilos globales, README y documentación frontend.
+
+**Indicadores y gráficos:** métricas derivadas de mocks, distribución por estado y monto por mercado con barras CSS accesibles.
+
+**Reportes y exportación:** reporte de Calificaciones y Cargas con filtros, validación de rango, ordenamiento, paginación y CSV seguro con BOM, punto y coma, escape de celdas y protección contra fórmulas.
+
+**Corrección uploadParser:** se reemplazó `headers.forEach((h, idx) => {` por `headers.forEach((h) => {` cuando `idx` no se utilizaba, sin alterar la lógica del parser.
+
+**Pruebas:** `git diff --check`, `npm ci`, `npm run lint` y `npm run build`.
+
+**Limitaciones:** datos simulados en memoria; sin backend, API, persistencia ni detalle individual nuevo.
+
+**Próximo paso:** Prompt 007 — Administración de usuarios, roles y permisos.

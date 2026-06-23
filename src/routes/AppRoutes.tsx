@@ -4,6 +4,7 @@ import { AccessDeniedPage } from '../pages/AccessDeniedPage';
 import { InicioPage } from '../pages/InicioPage';
 import { LoginPage } from '../pages/LoginPage';
 import { PlaceholderPage } from '../components/PlaceholderPage';
+import { ReportsPage } from '../pages/ReportsPage';
 import { ClassificationsPage } from '../pages/ClassificationsPage';
 import { ClassificationCreatePage } from '../pages/ClassificationCreatePage';
 import { ClassificationEditPage } from '../pages/ClassificationEditPage';
@@ -49,7 +50,7 @@ export function AppRoutes() {
             <Route path="/plantillas-carga" element={<UploadTemplatesPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/reportes" />}>
-            <Route path="/reportes" element={<PlaceholderPage title="Reportes" description="Consulta futura de reportes tributarios." />} />
+            <Route path="/reportes" element={<ReportsPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/administracion/usuarios" />}>
             <Route path="/administracion/usuarios" element={<PlaceholderPage title="Usuarios" description="Administración futura de usuarios." />} />

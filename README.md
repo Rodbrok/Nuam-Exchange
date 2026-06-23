@@ -100,3 +100,11 @@ El frontend incluye pantallas demostrativas para **Carga X Factor**, **Carga X M
 - Procesamiento simulado con progreso: no realiza `fetch`, no guarda archivos y no persiste datos.
 - Supervisor accede a una vista de revisión mockeada y no puede seleccionar ni procesar nuevos archivos.
 - Las plantillas CSV se generan en el navegador con BOM UTF-8 y separador punto y coma.
+
+## Prompt 006 — Dashboard y reportes simulados
+
+La aplicación incorpora un Dashboard real en `/inicio` con indicadores derivados en memoria desde `mockClassifications` y `uploadReviews`: total de calificaciones, estados principales, monto total, cargas registradas y filas con errores. Incluye filtros por ejercicio y mercado aplicados manualmente, gráficos accesibles con barras CSS para distribución por estado y monto por mercado, actividad reciente consolidada simulada y acciones rápidas ajustadas al rol autenticado.
+
+La ruta `/reportes` reemplaza el placeholder por reportes simulados de Calificaciones y Cargas. Cada reporte permite generar resultados filtrados, limpiar filtros, ordenar columnas, paginar en 5, 10 o 20 registros y exportar CSV. La exportación usa UTF-8 con BOM, separador punto y coma, escape de celdas, protección ante fórmulas de planilla y liberación de URL temporal.
+
+Los datos siguen siendo simulados: no existe backend, API, persistencia, fetch ni almacenamiento local. La integración futura deberá reemplazar los mocks por servicios autenticados manteniendo las validaciones de accesibilidad y seguridad.
