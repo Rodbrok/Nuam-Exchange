@@ -8,6 +8,9 @@ import { ClassificationsPage } from '../pages/ClassificationsPage';
 import { ClassificationCreatePage } from '../pages/ClassificationCreatePage';
 import { ClassificationEditPage } from '../pages/ClassificationEditPage';
 import { ClassificationCopyPage } from '../pages/ClassificationCopyPage';
+import { XFactorUploadPage } from '../pages/XFactorUploadPage';
+import { XAmountUploadPage } from '../pages/XAmountUploadPage';
+import { UploadTemplatesPage } from '../pages/UploadTemplatesPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useSession } from '../app/session/useSession';
 
@@ -37,13 +40,13 @@ export function AppRoutes() {
             <Route path="/calificaciones/:id/copiar" element={<ClassificationCopyPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/cargas/x-factor" />}>
-            <Route path="/cargas/x-factor" element={<PlaceholderPage title="Carga X Factor" description="Módulo futuro para carga de archivo X Factor." />} />
+            <Route path="/cargas/x-factor" element={<XFactorUploadPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/cargas/x-monto" />}>
-            <Route path="/cargas/x-monto" element={<PlaceholderPage title="Carga X Monto" description="Módulo futuro para carga de archivo X Monto." />} />
+            <Route path="/cargas/x-monto" element={<XAmountUploadPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/plantillas-carga" />}>
-            <Route path="/plantillas-carga" element={<PlaceholderPage title="Plantillas de carga" description="Administración futura de plantillas de carga." />} />
+            <Route path="/plantillas-carga" element={<UploadTemplatesPage />} />
           </Route>
           <Route element={<ProtectedRoute routePath="/reportes" />}>
             <Route path="/reportes" element={<PlaceholderPage title="Reportes" description="Consulta futura de reportes tributarios." />} />

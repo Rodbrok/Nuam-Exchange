@@ -129,3 +129,21 @@ Validaciones: opciones autorizadas, campos obligatorios, longitudes de instrumen
 Limitaciones: no hay backend, API, persistencia, modificación de mocks, `fetch`, Axios, `localStorage` ni `sessionStorage`. El factor es referencial, ficticio y no tributario.
 
 Próximo paso: Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo.
+
+## Prompt 005 — Carga X Factor, Carga X Monto y formato de archivo
+
+**Objetivo:** reemplazar placeholders de cargas y plantillas por pantallas funcionales de demostración CSV.
+
+**Archivos creados y modificados:** se agregaron tipos de upload, componentes reutilizables, parser, validación, utilidades CSV, permisos, mocks de revisión y páginas de carga/plantillas; se actualizaron rutas, estilos y documentación.
+
+**Formatos provisionales:** X Factor usa `ejercicio;mercado;instrumento;fechaPago;secuenciaEvento;factorActualizacion`; X Monto usa `ejercicio;mercado;instrumento;fechaPago;secuenciaEvento;monto`.
+
+**Validaciones:** extensión `.csv`, archivo no vacío, máximo 5 MB, máximo 1.000 filas, encabezados requeridos, columnas inesperadas/duplicadas, valores por fila, fechas reales, decimales y duplicados.
+
+**Roles:** Administrador y Analista Tributario pueden seleccionar, validar, procesar y descargar; Supervisor solo revisa datos ficticios y descarga errores mockeados.
+
+**Pruebas:** `git diff --check`, instalación, lint y build deben ejecutarse al cierre del prompt. Las pruebas manuales cubren archivos correctos, inválidos, duplicados, descargas, procesamiento, plantillas, roles y responsive.
+
+**Limitaciones:** no hay backend, API, persistencia, Excel real ni contrato tributario definitivo.
+
+**Próximo paso:** Prompt 006 — Dashboard, vista consolidada y reportes simulados.
