@@ -1,0 +1,87 @@
+name: NUAM Exchange CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore local tools
+        run: dotnet tool restore
+
+      - name: Restore solution
+        run: dotnet restore NuamExchange.sln
+
+      - name: Verify formatting
+        run: dotnet format NuamExchange.sln --verify-no-changes --no-restore
+
+      - name: Build
+        run: dotnet build NuamExchange.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test NuamExchange.sln --configuration Release --no-build
+
+      - name: Generate idempotent migration script
+        run: dotnet ef migrations script --idempotent --no-build --configuration Release --project src/NuamExchange.Infrastructure --startup-project src/NuamExchange.Api --output migration-validation.sql
+
+      - name: Validate migration script
+        run: |
+          test -s migration-validation.sql
+          grep -Fq "CREATE TABLE [Classifications]" migration-validation.sql
+          grep -Fq "INSERT INTO [Classifications]" migration-validation.sql
+
+      - name: Remove migration validation script
+        if: always()
+        run: rm -f migration-validation.sql
