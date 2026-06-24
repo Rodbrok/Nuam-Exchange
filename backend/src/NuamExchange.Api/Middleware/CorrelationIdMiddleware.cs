@@ -1,2 +1,25 @@
 namespace NuamExchange.Api.Middleware;
-public sealed class CorrelationIdMiddleware(RequestDelegate next){const string Header="x-correlation-id"; public async Task InvokeAsync(HttpContext ctx,ILogger<CorrelationIdMiddleware> logger){var incoming=ctx.Request.Headers[Header].FirstOrDefault();var id=IsSafe(incoming)?incoming!:Guid.NewGuid().ToString("N");ctx.TraceIdentifier=id;ctx.Response.Headers[Header]=id;using(logger.BeginScope(new Dictionary<string,object>{{"CorrelationId",id}})){await next(ctx);}} static bool IsSafe(string? v)=>!string.IsNullOrWhiteSpace(v)&&v.Length<=64&&v.All(c=>char.IsLetterOrDigit(c)||c is '-' or '_');}
+
+public sealed class CorrelationIdMiddleware(RequestDelegate next)
+{
+    private const string Header = "x-correlation-id";
+
+    public async Task InvokeAsync(HttpContext httpContext, ILogger<CorrelationIdMiddleware> logger)
+    {
+        var incoming = httpContext.Request.Headers[Header].FirstOrDefault();
+        var correlationId = IsSafe(incoming) ? incoming! : Guid.NewGuid().ToString("N");
+
+        httpContext.TraceIdentifier = correlationId;
+        httpContext.Response.Headers[Header] = correlationId;
+
+        using (logger.BeginScope(new Dictionary<string, object> { { "CorrelationId", correlationId } }))
+        {
+            await next(httpContext);
+        }
+    }
+
+    private static bool IsSafe(string? value) =>
+        !string.IsNullOrWhiteSpace(value)
+        && value.Length <= 64
+        && value.All(character => char.IsLetterOrDigit(character) || character is '-' or '_');
+}

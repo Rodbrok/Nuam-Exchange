@@ -1,3 +1,66 @@
-using Microsoft.AspNetCore.Diagnostics; using Microsoft.AspNetCore.Mvc; using NuamExchange.Application.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using NuamExchange.Application.Exceptions;
+
 namespace NuamExchange.Api.Errors;
-public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger):IExceptionHandler{public async ValueTask<bool> TryHandleAsync(HttpContext ctx,Exception ex,CancellationToken ct){var (status,title,detail,errors)=ex switch{ValidationException v=>(400,"Solicitud inválida",v.Message,v.Errors),NotFoundException n=>(404,"Recurso no encontrado",n.Message,null),ConflictException c=>(409,"Conflicto",c.Message,null),ConcurrencyException c=>(409,"Conflicto de concurrencia",c.Message,null),_=>(500,"Error interno","Ocurrió un error inesperado.",null)}; if(status>=500)logger.LogError(ex,"Unhandled error {TraceId}",ctx.TraceIdentifier); else logger.LogWarning("Handled error {Status} {TraceId}: {Message}",status,ctx.TraceIdentifier,ex.Message); var pd=new ProblemDetails{Title=title,Status=status,Detail=detail,Instance=ctx.Request.Path}; pd.Extensions["traceId"]=ctx.Response.Headers["x-correlation-id"].FirstOrDefault()??ctx.TraceIdentifier; if(errors is not null)pd.Extensions["errors"]=errors; ctx.Response.StatusCode=status; ctx.Response.ContentType="application/problem+json"; await ctx.Response.WriteAsJsonAsync(pd,ct); return true;}}
+
+public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+{
+    private static readonly Action<ILogger, string, Exception?> LogUnhandledException =
+        LoggerMessage.Define<string>(
+            LogLevel.Error,
+            new EventId(1001, "UnhandledException"),
+            "Unhandled error {TraceId}");
+
+    private static readonly Action<ILogger, int, string, string, Exception?> LogHandledException =
+        LoggerMessage.Define<int, string, string>(
+            LogLevel.Warning,
+            new EventId(1002, "HandledException"),
+            "Handled error {Status} {TraceId}: {Message}");
+
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext,
+        Exception exception,
+        CancellationToken cancellationToken)
+    {
+        var (status, title, detail, errors) = exception switch
+        {
+            ValidationException validationException => (400, "Solicitud inválida", validationException.Message, validationException.Errors),
+            NotFoundException notFoundException => (404, "Recurso no encontrado", notFoundException.Message, null),
+            ConflictException conflictException => (409, "Conflicto", conflictException.Message, null),
+            ConcurrencyException concurrencyException => (409, "Conflicto de concurrencia", concurrencyException.Message, null),
+            _ => (500, "Error interno", "Ocurrió un error inesperado.", null),
+        };
+
+        if (status >= StatusCodes.Status500InternalServerError)
+        {
+            LogUnhandledException(logger, httpContext.TraceIdentifier, exception);
+        }
+        else
+        {
+            LogHandledException(logger, status, httpContext.TraceIdentifier, exception.Message, null);
+        }
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = title,
+            Status = status,
+            Detail = detail,
+            Instance = httpContext.Request.Path,
+        };
+
+        problemDetails.Extensions["traceId"] = httpContext.Response.Headers["x-correlation-id"].FirstOrDefault()
+            ?? httpContext.TraceIdentifier;
+
+        if (errors is not null)
+        {
+            problemDetails.Extensions["errors"] = errors;
+        }
+
+        httpContext.Response.StatusCode = status;
+        httpContext.Response.ContentType = "application/problem+json";
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+
+        return true;
+    }
+}
