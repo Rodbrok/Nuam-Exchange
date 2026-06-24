@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (!builder.Environment.IsDevelopment() && !builder.Environment.IsEnvironment("Testing"))
 {
-    throw new InvalidOperationException("La autenticación real todavía no está implementada. El backend solo puede ejecutarse en Development o Testing hasta completar el Prompt 011.");
+    throw new InvalidOperationException(
+        "La autenticación real todavía no está implementada. El backend solo puede ejecutarse en Development o Testing hasta completar el Prompt 011.");
 }
 
 builder.Services.AddProblemDetails();

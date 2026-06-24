@@ -140,7 +140,19 @@ public sealed class ClassificationServiceTests
         "Acciones", "Manual", 2026, "NUAM-A", new DateOnly(2026, 1, 15), "Dividendo válido", "EVT-001", 1.123456m, 100.25m, ClassificationStatus.Vigente);
 
     private static Classification Existing(string id) => new(
-        id, "Acciones", "Manual", 2026, "NUAM-A", new DateOnly(2026, 1, 15), "Dividendo válido", "EVT-001", 1m, 100m, ClassificationStatus.Vigente, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow);
+        id,
+        "Acciones",
+        "Manual",
+        2026,
+        "NUAM-A",
+        new DateOnly(2026, 1, 15),
+        "Dividendo válido",
+        "EVT-001",
+        1m,
+        100m,
+        ClassificationStatus.Vigente,
+        DateTimeOffset.UtcNow,
+        DateTimeOffset.UtcNow);
 
     private static void SetRowVersion(Classification classification, byte[] rowVersion) =>
         typeof(Classification).GetProperty(nameof(Classification.RowVersion), BindingFlags.Instance | BindingFlags.Public)!.SetValue(classification, rowVersion);
@@ -151,11 +163,21 @@ internal sealed class FakeClassificationRepository(Classification? existing = nu
     public bool Duplicate { get; init; }
     public string? LastDuplicateExcludeId { get; private set; }
 
-    public Task<IReadOnlyList<Classification>> ListAsync(ClassificationListRequest request, CancellationToken cancellationToken) => Task.FromResult<IReadOnlyList<Classification>>([]);
+    public Task<IReadOnlyList<Classification>> ListAsync(
+        ClassificationListRequest request,
+        CancellationToken cancellationToken) =>
+        Task.FromResult<IReadOnlyList<Classification>>([]);
     public Task<int> CountAsync(ClassificationListRequest request, CancellationToken cancellationToken) => Task.FromResult(0);
     public Task<Classification?> GetByIdAsync(string id, bool tracking, CancellationToken cancellationToken) => Task.FromResult(existing?.Id == id ? existing : null);
     public Task<ClassificationCatalogValues> GetCatalogsAsync(CancellationToken cancellationToken) => Task.FromResult(new ClassificationCatalogValues([]));
-    public Task<bool> ExistsDuplicateAsync(int fiscalYear, string market, string instrument, DateOnly paymentDate, string eventSequence, string? excludeId, CancellationToken cancellationToken)
+    public Task<bool> ExistsDuplicateAsync(
+        int fiscalYear,
+        string market,
+        string instrument,
+        DateOnly paymentDate,
+        string eventSequence,
+        string? excludeId,
+        CancellationToken cancellationToken)
     {
         LastDuplicateExcludeId = excludeId;
         return Task.FromResult(Duplicate);

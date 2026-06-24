@@ -1,1 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../NuamExchange.Domain/NuamExchange.Domain.csproj" /></ItemGroup></Project>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../NuamExchange.Domain/NuamExchange.Domain.csproj" />
+  </ItemGroup>
+</Project>
