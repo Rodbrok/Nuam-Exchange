@@ -31,8 +31,7 @@ public static class DependencyInjection
                 options.Lockout.AllowedForNewUsers = true;
             })
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<NuamExchangeDbContext>()
-            .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<NuamExchangeDbContext>();
 
         services.AddScoped<IClassificationRepository, ClassificationRepository>();
 
