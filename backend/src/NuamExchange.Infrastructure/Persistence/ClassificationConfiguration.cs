@@ -66,14 +66,14 @@ public sealed class ClassificationConfiguration : IEntityTypeConfiguration<Class
             .IsConcurrencyToken();
 
         builder.HasIndex(classification => new
-            {
-                classification.FiscalYear,
-                classification.Market,
-                classification.Instrument,
-                classification.PaymentDate,
-                classification.EventSequence,
-            })
-            .IsUnique();
+        {
+            classification.FiscalYear,
+            classification.Market,
+            classification.Instrument,
+            classification.PaymentDate,
+            classification.EventSequence,
+        })
+        .IsUnique();
 
         builder.HasIndex(classification => classification.FiscalYear);
         builder.HasIndex(classification => classification.Market);
