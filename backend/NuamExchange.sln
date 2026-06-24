@@ -1,0 +1,48 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuamExchange.Api", "src/NuamExchange.Api/NuamExchange.Api.csproj", "{6DB6EBDA-AE46-5382-9CE1-63763203998D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuamExchange.Application", "src/NuamExchange.Application/NuamExchange.Application.csproj", "{4713700E-7897-5332-8A86-8BFD9165C862}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuamExchange.Domain", "src/NuamExchange.Domain/NuamExchange.Domain.csproj", "{5EFAE6CF-30DD-589E-83A2-5B156E0AE969}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuamExchange.Infrastructure", "src/NuamExchange.Infrastructure/NuamExchange.Infrastructure.csproj", "{7C50D223-4D8F-50F6-A932-084752597B88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuamExchange.Application.Tests", "tests/NuamExchange.Application.Tests/NuamExchange.Application.Tests.csproj", "{427CC0A4-F017-5B13-9A0A-E6625A712B53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuamExchange.Api.Tests", "tests/NuamExchange.Api.Tests/NuamExchange.Api.Tests.csproj", "{51451B43-D518-550F-B9F1-13735EC593AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DB6EBDA-AE46-5382-9CE1-63763203998D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DB6EBDA-AE46-5382-9CE1-63763203998D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB6EBDA-AE46-5382-9CE1-63763203998D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DB6EBDA-AE46-5382-9CE1-63763203998D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4713700E-7897-5332-8A86-8BFD9165C862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4713700E-7897-5332-8A86-8BFD9165C862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4713700E-7897-5332-8A86-8BFD9165C862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4713700E-7897-5332-8A86-8BFD9165C862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EFAE6CF-30DD-589E-83A2-5B156E0AE969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EFAE6CF-30DD-589E-83A2-5B156E0AE969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EFAE6CF-30DD-589E-83A2-5B156E0AE969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EFAE6CF-30DD-589E-83A2-5B156E0AE969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C50D223-4D8F-50F6-A932-084752597B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C50D223-4D8F-50F6-A932-084752597B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C50D223-4D8F-50F6-A932-084752597B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C50D223-4D8F-50F6-A932-084752597B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{427CC0A4-F017-5B13-9A0A-E6625A712B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{427CC0A4-F017-5B13-9A0A-E6625A712B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{427CC0A4-F017-5B13-9A0A-E6625A712B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{427CC0A4-F017-5B13-9A0A-E6625A712B53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51451B43-D518-550F-B9F1-13735EC593AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51451B43-D518-550F-B9F1-13735EC593AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51451B43-D518-550F-B9F1-13735EC593AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51451B43-D518-550F-B9F1-13735EC593AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
