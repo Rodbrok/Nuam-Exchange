@@ -31,6 +31,10 @@ Las migraciones no se aplican automáticamente por defecto (`Database:ApplyMigra
 ## API
 Implementa `/api/v1/classifications`, `/api/v1/classifications/catalogs`, `/api/v1/classifications/{id}`, creación, actualización, copia y eliminación. Usa ProblemDetails, ETag/RowVersion, CORS restringido, rate limiting y Correlation ID (`x-correlation-id`). Swagger está habilitado solo en Development con esquema Bearer documentado como pendiente.
 
+
+## Base de identidad
+ASP.NET Core Identity está incorporado en la infraestructura del backend. La persistencia de usuarios y roles queda preparada mediante EF Core, con `UserManager` y `RoleManager` registrados para uso futuro. Todavía no existen endpoints de autenticación, JWT, usuarios predeterminados ni contraseñas predeterminadas. El backend continúa limitado a los entornos `Development` y `Testing`.
+
 ## Health checks
 - `/health/live`: proceso activo, no consulta SQL Server.
 - `/health/ready`: valida conectividad a SQL Server y puede responder 503 si no hay servidor disponible.
@@ -50,4 +54,4 @@ dotnet test NuamExchange.sln
 Las pruebas de API usan entorno `Testing`; no deben depender de SQL Server externo.
 
 ## Limitaciones
-No se implementan login real, JWT real, usuarios, roles persistidos, uploads, dashboard, reportes, auditoría automática ni respaldos reales. El borrado es físico en esta etapa; el borrado lógico se evaluará después.
+No se implementan login real, JWT real, endpoints Auth, uploads, dashboard, reportes, auditoría automática ni respaldos reales. El borrado es físico en esta etapa; el borrado lógico se evaluará después.
