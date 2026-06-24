@@ -6,6 +6,8 @@ namespace NuamExchange.Api.Errors;
 
 public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
+    private const string ProblemJsonContentType = "application/problem+json";
+
     private static readonly Action<ILogger, string, Exception?> LogUnhandledException =
         LoggerMessage.Define<string>(
             LogLevel.Error,
@@ -58,8 +60,11 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         }
 
         httpContext.Response.StatusCode = status;
-        httpContext.Response.ContentType = "application/problem+json";
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync(
+            problemDetails,
+            options: null,
+            contentType: ProblemJsonContentType,
+            cancellationToken: cancellationToken);
 
         return true;
     }
