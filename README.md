@@ -154,6 +154,21 @@ La capa `src/api` separa configuración, contratos DTO, `HttpClient` con `fetch`
 
 La especificación provisional está en `docs/api/openapi.yaml`; los acuerdos generales están en `docs/api/contratos_api.md` y las recomendaciones para ASP.NET Core Web API .NET 8 están en `docs/api/integracion_aspnet_core.md`. No se incluye backend, SQL Server ni autenticación real en esta etapa.
 
+## Integración continua
+
+Cada Pull Request y cada push a `main` ejecuta GitHub Actions para validar automáticamente la calidad del frontend y del backend. La integración continua verifica:
+
+- `npm ci`.
+- Frontend lint con `npm run lint`.
+- Frontend build con `npm run build`.
+- Backend restore con `dotnet restore`.
+- Formato con `dotnet format`.
+- Compilación con `dotnet build`.
+- Pruebas con `dotnet test`.
+- Generación del script idempotente de migraciones de EF Core.
+
+Un Pull Request no debe fusionarse cuando alguna de estas verificaciones falla.
+
 ## Backend ASP.NET Core .NET 8
 
 El repositorio ahora incluye `backend/` con una solución ASP.NET Core Web API .NET 8, SQL Server y EF Core 8 para la API real de Calificaciones. La autenticación real queda pendiente para el Prompt 011, por lo que el backend falla al iniciar fuera de `Development` o `Testing`.
