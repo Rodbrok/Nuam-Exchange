@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using NuamExchange.Api.Authentication;
 using NuamExchange.Api.Errors;
 using NuamExchange.Api.Middleware;
 using NuamExchange.Application.Classifications;
@@ -22,6 +23,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddScoped<IClassificationService, ClassificationService>();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddJwtBearerAuthentication();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -109,6 +111,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("Frontend");
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseRateLimiter();
 
 app.MapControllers().RequireRateLimiting("General");

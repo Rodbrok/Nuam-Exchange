@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -460,11 +461,30 @@ public sealed class ClassificationsApiTests
             ClassificationStatus.Vigente);
 }
 
-internal sealed class TestingWebApplicationFactory(string databaseName) : WebApplicationFactory<Program>
+internal sealed class TestingWebApplicationFactory(
+    string databaseName,
+    IReadOnlyDictionary<string, string?>? configuration = null) : WebApplicationFactory<Program>
 {
+    private static readonly IReadOnlyDictionary<string, string?> DefaultJwtConfiguration = new Dictionary<string, string?>
+    {
+        ["Jwt:Issuer"] = "NuamExchange.Api.Tests",
+        ["Jwt:Audience"] = "NuamExchange.Api.Tests",
+        ["Jwt:SigningKey"] = "testing-signing-key-with-32-chars-minimum",
+        ["Jwt:AccessTokenMinutes"] = "60",
+    };
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
+        builder.ConfigureAppConfiguration((_, configBuilder) =>
+        {
+            configBuilder.AddInMemoryCollection(DefaultJwtConfiguration);
+
+            if (configuration is not null)
+            {
+                configBuilder.AddInMemoryCollection(configuration);
+            }
+        });
         builder.ConfigureServices(services =>
         {
             services.RemoveAll<DbContextOptions<NuamExchangeDbContext>>();
