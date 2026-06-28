@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NuamExchange.Application.Authentication;
 using NuamExchange.Application.Classifications;
+using NuamExchange.Infrastructure.Authentication;
 using NuamExchange.Infrastructure.Classifications;
 using NuamExchange.Infrastructure.Identity;
 using NuamExchange.Infrastructure.Persistence;
@@ -33,6 +35,9 @@ public static class DependencyInjection
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<NuamExchangeDbContext>();
 
+        services.Configure<JwtOptions>(config.GetSection(JwtOptions.SectionName));
+        services.AddSingleton(TimeProvider.System);
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IClassificationRepository, ClassificationRepository>();
 
         return services;
