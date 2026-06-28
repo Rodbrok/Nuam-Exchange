@@ -33,7 +33,7 @@ Implementa `/api/v1/classifications`, `/api/v1/classifications/catalogs`, `/api/
 
 
 ## Base de identidad
-ASP.NET Core Identity está incorporado en la infraestructura del backend. La persistencia de usuarios y roles queda preparada mediante EF Core, con `UserManager` y `RoleManager` registrados para uso futuro. Todavía no existen endpoints de autenticación, JWT, usuarios predeterminados ni contraseñas predeterminadas. El backend continúa limitado a los entornos `Development` y `Testing`.
+ASP.NET Core Identity está incorporado en la infraestructura del backend. La persistencia de usuarios y roles queda preparada mediante EF Core, con `UserManager` y `RoleManager` registrados para uso futuro. Existe una base de generación de tokens JWT mediante `IJwtTokenService`, configurada desde la sección `Jwt`. La clave `Jwt:SigningKey` debe cargarse con variables de entorno (`Jwt__SigningKey`) o user-secrets y nunca debe versionarse con un valor real. Todavía no existen endpoints de autenticación, login, middleware Bearer, usuarios predeterminados ni contraseñas predeterminadas. El backend continúa limitado a los entornos `Development` y `Testing`.
 
 ## Health checks
 - `/health/live`: proceso activo, no consulta SQL Server.
@@ -54,4 +54,4 @@ dotnet test NuamExchange.sln
 Las pruebas de API usan entorno `Testing`; no deben depender de SQL Server externo.
 
 ## Limitaciones
-No se implementan login real, JWT real, endpoints Auth, uploads, dashboard, reportes, auditoría automática ni respaldos reales. El borrado es físico en esta etapa; el borrado lógico se evaluará después.
+No se implementan login real, middleware Bearer, endpoints Auth, refresh tokens, uploads, dashboard, reportes, auditoría automática ni respaldos reales. El borrado es físico en esta etapa; el borrado lógico se evaluará después.
