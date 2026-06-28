@@ -1,16 +1,23 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NuamExchange.Domain.Classifications;
+using NuamExchange.Infrastructure.Identity;
 
 namespace NuamExchange.Infrastructure.Persistence;
 
-public sealed class NuamExchangeDbContext(DbContextOptions<NuamExchangeDbContext> options) : DbContext(options)
+public sealed class NuamExchangeDbContext(DbContextOptions<NuamExchangeDbContext> options)
+    : IdentityDbContext<ApplicationUser, IdentityRole, string>(options)
 {
     private const string InMemoryProviderName = "Microsoft.EntityFrameworkCore.InMemory";
 
     public DbSet<Classification> Classifications => Set<Classification>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) =>
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(NuamExchangeDbContext).Assembly);
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(typeof(NuamExchangeDbContext).Assembly);
+    }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
