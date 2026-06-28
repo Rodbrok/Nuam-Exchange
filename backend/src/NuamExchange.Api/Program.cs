@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using NuamExchange.Api.Authentication;
 using NuamExchange.Api.Errors;
 using NuamExchange.Api.Middleware;
+using NuamExchange.Api.Swagger;
 using NuamExchange.Application.Classifications;
 using NuamExchange.Infrastructure;
 using NuamExchange.Infrastructure.Persistence;
@@ -70,20 +71,22 @@ builder.Services.AddSwaggerGen(options =>
         {
             Title = "NUAM Exchange API",
             Version = "v1",
-            Description = "Implementación inicial. Autenticación pendiente de implementación.",
+            Description = "Implementación inicial de la API NUAM Exchange con autenticación JWT Bearer documentada para operaciones protegidas.",
         });
 
     options.AddSecurityDefinition(
         "Bearer",
         new OpenApiSecurityScheme
         {
-            Description = "JWT Bearer provisional para Prompt 011. Autenticación pendiente de implementación.",
+            Description = "Ingresa únicamente el token JWT. Swagger enviará el encabezado Authorization con el esquema Bearer automáticamente; no escribas manualmente la palabra Bearer.",
             Name = "Authorization",
             In = ParameterLocation.Header,
             Type = SecuritySchemeType.Http,
             Scheme = "bearer",
             BearerFormat = "JWT",
         });
+
+    options.OperationFilter<AuthorizeOperationFilter>();
 });
 
 var app = builder.Build();

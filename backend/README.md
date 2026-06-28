@@ -29,11 +29,11 @@ Ejemplos válidos: LocalDB, SQL Server Express (`.\SQLEXPRESS`) o SQL Server Dev
 Las migraciones no se aplican automáticamente por defecto (`Database:ApplyMigrationsOnStartup=false`). Para aplicar use `scripts/update-database.ps1` o `dotnet ef database update`.
 
 ## API
-Implementa `/api/v1/classifications`, `/api/v1/classifications/catalogs`, `/api/v1/classifications/{id}`, creación, actualización, copia y eliminación. Usa ProblemDetails, ETag/RowVersion, CORS restringido, rate limiting y Correlation ID (`x-correlation-id`). Swagger está habilitado solo en Development con esquema Bearer documentado como pendiente.
+Implementa `/api/v1/classifications`, `/api/v1/classifications/catalogs`, `/api/v1/classifications/{id}`, creación, actualización, copia y eliminación. Usa ProblemDetails, ETag/RowVersion, CORS restringido, rate limiting y Correlation ID (`x-correlation-id`). Swagger está habilitado solo en Development con esquema Bearer JWT para operaciones protegidas.
 
 
 ## Base de identidad
-ASP.NET Core Identity está incorporado en la infraestructura del backend. La persistencia de usuarios y roles queda preparada mediante EF Core, con `UserManager` y `RoleManager` registrados para uso futuro. Existe una base de generación de tokens JWT mediante `IJwtTokenService`, configurada desde la sección `Jwt`. La clave `Jwt:SigningKey` debe cargarse con variables de entorno (`Jwt__SigningKey`) o user-secrets y nunca debe versionarse con un valor real. Todavía no existen endpoints de autenticación, login, middleware Bearer, usuarios predeterminados ni contraseñas predeterminadas. El backend continúa limitado a los entornos `Development` y `Testing`.
+ASP.NET Core Identity está incorporado en la infraestructura del backend. La persistencia de usuarios y roles queda preparada mediante EF Core, con `UserManager` y `RoleManager` registrados para uso futuro. Existe una base de generación de tokens JWT mediante `IJwtTokenService`, configurada desde la sección `Jwt`. La clave `Jwt:SigningKey` debe cargarse con variables de entorno (`Jwt__SigningKey`) o user-secrets y nunca debe versionarse con un valor real. Existe el endpoint protegido `GET /api/v1/auth/me` para inspeccionar los claims autenticados. Todavía no existen login, refresh tokens, usuarios predeterminados ni contraseñas predeterminadas. El backend continúa limitado a los entornos `Development` y `Testing`.
 
 ## Health checks
 - `/health/live`: proceso activo, no consulta SQL Server.
@@ -54,4 +54,4 @@ dotnet test NuamExchange.sln
 Las pruebas de API usan entorno `Testing`; no deben depender de SQL Server externo.
 
 ## Limitaciones
-No se implementan login real, middleware Bearer, endpoints Auth, refresh tokens, uploads, dashboard, reportes, auditoría automática ni respaldos reales. El borrado es físico en esta etapa; el borrado lógico se evaluará después.
+No se implementan login real, refresh tokens, uploads, dashboard, reportes, auditoría automática ni respaldos reales. El borrado es físico en esta etapa; el borrado lógico se evaluará después.
